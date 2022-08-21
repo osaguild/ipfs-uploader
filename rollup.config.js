@@ -1,7 +1,7 @@
 import commonjs from '@rollup/plugin-commonjs'
 import typescript from '@rollup/plugin-typescript'
 import dts from 'rollup-plugin-dts'
-const pkg = require('./package.json')
+import pkg from './package.json'
 
 export default [
   {
@@ -27,15 +27,15 @@ export default [
         exclude: ['**/__tests__/**'],
       }),
     ],
-    external: ['react', 'react-dom', '@emotion/styled', '@emotion/react'],
+    external: ['react', 'react-dom'],
   },
   {
-    input: 'dist/cjs/types/index.d.ts',
+    input: 'dist/cjs/index.d.ts',
     output: [{ file: 'dist/cjs/index.d.ts', format: 'cjs' }],
     plugins: [dts()],
   },
   {
-    input: 'dist/esm/types/index.d.ts',
+    input: 'dist/esm/index.d.ts',
     output: [{ file: 'dist/esm/index.d.ts', format: 'esm' }],
     plugins: [dts()],
   },

@@ -9,7 +9,8 @@
     "react",
     "upload"
   ],
-  "main": "index.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "license": "MIT",
   "author": {
     "name": "osaguild",
@@ -27,8 +28,7 @@
     "lint": "run-s lint:eslint lint:prettier",
     "lint:eslint": "eslint --fix --ext .js,.jsx,.ts,.tsx",
     "lint:prettier": "prettier --write './**/*.{js,ts,tsx,json,md}'",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "rollup": "rollup -c",
     "prepare": "husky install",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"

@@ -1,7 +1,6 @@
-import * as React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import Upload from './index'
+import { Upload } from './index'
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {

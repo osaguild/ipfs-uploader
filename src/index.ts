@@ -1,1 +1,1 @@
-export * as Upload from './components/Upload'
+export { Upload, UploadProps } from './components/Upload'

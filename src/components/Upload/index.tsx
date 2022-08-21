@@ -1,10 +1,10 @@
-import * as React from 'react'
+import { FunctionComponent } from 'react'
 
 interface UploadProps {
   message: string
 }
 
-const Upload: React.FunctionComponent<UploadProps> = ({ message }) => {
+const Upload: FunctionComponent<UploadProps> = ({ message }) => {
   return (
     <div>
       <div>{message}</div>
@@ -12,4 +12,4 @@ const Upload: React.FunctionComponent<UploadProps> = ({ message }) => {
   )
 }
 
-export default Upload
+export { Upload, UploadProps }
