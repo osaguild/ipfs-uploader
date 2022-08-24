@@ -8,15 +8,16 @@ import { AxiosError } from 'axios'
 interface UploadProps {
   success: (metadata: Metadata) => void
   failed: (message: string) => void
+  pinataApiJwt: string
 }
 
-const Upload: FunctionComponent<UploadProps> = ({ success, failed }) => {
+const Upload: FunctionComponent<UploadProps> = ({ success, failed, pinataApiJwt }) => {
   const { file } = useContext(FileContext)
 
   const click = async () => {
     try {
       if (file) {
-        const metadata = await uploadFile('image', file)
+        const metadata = await uploadFile('image', file, pinataApiJwt)
         success(metadata)
       } else {
         throw new FileNotSetError('')

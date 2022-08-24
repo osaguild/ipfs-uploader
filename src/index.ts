@@ -1,1 +1,1 @@
-export { IpfsUploader } from './components/IpfsUploader'
+export { IpfsUploader, IpfsUploaderProps } from './components/IpfsUploader'

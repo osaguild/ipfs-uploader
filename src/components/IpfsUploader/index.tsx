@@ -5,7 +5,11 @@ import { FileImage } from '../FileImage'
 import { Upload } from '../Upload'
 import { FileContext, useFileProvider } from '../../hooks/useFileContext'
 
-const IpfsUploader: FunctionComponent = () => {
+interface IpfsUploaderProps {
+  pinataApiJwt: string
+}
+
+const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({ pinataApiJwt }) => {
   return (
     <ChakraProvider>
       <FileContext.Provider value={useFileProvider()}>
@@ -14,10 +18,11 @@ const IpfsUploader: FunctionComponent = () => {
         <Upload
           success={(metadata) => console.log('success', metadata)}
           failed={(message) => console.log('failed', message)}
+          pinataApiJwt={pinataApiJwt}
         />
       </FileContext.Provider>
     </ChakraProvider>
   )
 }
 
-export { IpfsUploader }
+export { IpfsUploader, IpfsUploaderProps }
