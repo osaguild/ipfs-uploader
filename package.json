@@ -16,6 +16,14 @@
   "license": "MIT",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/osaguild/ipfs-uploader.git"
+  },
+  "bugs": {
+    "url": "https://github.com/osaguild/ipfs-uploader/issues"
+  },
+  "homepage": "https://github.com/osaguild/ipfs-uploader",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
