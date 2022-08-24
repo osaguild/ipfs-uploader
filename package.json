@@ -22,10 +22,11 @@
     "lint": "run-s lint:eslint lint:prettier",
     "lint:eslint": "eslint --fix --ext .js,.jsx,.ts,.tsx",
     "lint:prettier": "prettier --write './**/*.{js,ts,tsx,json,md}'",
+    "test": "jest",
     "rollup": "rollup -c",
     "prepare": "husky install",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "sb": "start-storybook -p 6006",
+    "build-sb": "build-storybook"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.2.8",
@@ -57,7 +58,9 @@
     "@types/react-dom": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.33.1",
+    "axios": "^0.27.2",
     "babel-plugin-named-exports-order": "^0.0.2",
+    "dotenv": "^16.0.1",
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-jest": "^26.8.5",
@@ -71,6 +74,8 @@
     "prop-types": "^15.8.1",
     "rollup": "^2.78.1",
     "rollup-plugin-dts": "^4.2.2",
+    "ts-jest": "^28.0.8",
+    "ts-node": "^10.9.1",
     "tslib": "^2.4.0",
     "typescript": "^4.4.2",
     "webpack": "^5.74.0"
