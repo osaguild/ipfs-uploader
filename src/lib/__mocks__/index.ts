@@ -1,6 +1,7 @@
 import { Metadata } from '../pinata'
 
 const uploadFile = async (fileName: string, file: File | NodeJS.ReadableStream, jwt: string) => {
+  console.log('[mock]uploadFile is called. fileName:', fileName, 'file:', file, 'jwt:', jwt)
   return {
     IpfsHash: 'qazwsx',
     PinSize: 1000,
