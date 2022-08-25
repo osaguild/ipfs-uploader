@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { FileImage } from '../FileImage'
 
-jest.mock('../../hooks/useFileContext')
+jest.mock('../../hooks/FileContext')
 
 describe('FileImage()', () => {
   beforeEach(() => {

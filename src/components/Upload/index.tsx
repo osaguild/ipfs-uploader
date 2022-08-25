@@ -1,6 +1,6 @@
-import { FunctionComponent, useContext } from 'react'
+import { FunctionComponent } from 'react'
 import { Button } from '@chakra-ui/react'
-import { FileContext } from '../../hooks/useFileContext'
+import { useFileContext } from '../../hooks/FileContext'
 import { Metadata, uploadFile } from '../../lib/pinata'
 import { FileNotSetError } from '../../errors'
 import { AxiosError } from 'axios'
@@ -12,7 +12,7 @@ interface UploadProps {
 }
 
 const Upload: FunctionComponent<UploadProps> = ({ success, failed, pinataApiJwt }) => {
-  const { file } = useContext(FileContext)
+  const { file } = useFileContext()
 
   const click = async () => {
     try {

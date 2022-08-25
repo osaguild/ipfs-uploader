@@ -1,16 +1,18 @@
-import { createContext, Dispatch, useState } from 'react'
+import { createContext, Dispatch, useState, useContext } from 'react'
 
-type Context = {
+type FileState = {
   file: File | undefined
   setFile: Dispatch<File> | undefined
 }
 
-const initialize: Context = {
+const initialize: FileState = {
   file: undefined,
   setFile: undefined,
 }
 
 const FileContext = createContext(initialize)
+
+const useFileContext = () => useContext(FileContext)
 
 const useFileProvider = () => {
   const [file, setFile] = useState(initialize.file)
@@ -18,7 +20,7 @@ const useFileProvider = () => {
   return {
     file,
     setFile,
-  } as Context
+  } as FileState
 }
 
-export { FileContext, useFileProvider }
+export { FileContext, FileState, useFileProvider, useFileContext }

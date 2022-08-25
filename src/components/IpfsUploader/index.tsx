@@ -3,7 +3,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { FileSelector } from '../FileSelector'
 import { FileImage } from '../FileImage'
 import { Upload } from '../Upload'
-import { FileContext, useFileProvider } from '../../hooks/useFileContext'
+import { FileContext, useFileProvider } from '../../hooks/FileContext'
 
 interface IpfsUploaderProps {
   pinataApiJwt: string

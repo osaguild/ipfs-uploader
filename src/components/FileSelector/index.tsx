@@ -1,10 +1,10 @@
-import { FunctionComponent, createRef, useContext, ChangeEvent } from 'react'
+import { FunctionComponent, createRef, ChangeEvent } from 'react'
 import { Button } from '@chakra-ui/react'
-import { FileContext } from '../../hooks/useFileContext'
+import { useFileContext } from '../../hooks/FileContext'
 
 const FileSelector: FunctionComponent = () => {
   const fileInput = createRef<HTMLInputElement>()
-  const { file, setFile } = useContext(FileContext)
+  const { file, setFile } = useFileContext()
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (setFile && event.target.files?.[0]) setFile(event.target.files?.[0])

@@ -1,10 +1,9 @@
-import { FunctionComponent, useContext } from 'react'
+import { FunctionComponent } from 'react'
 import { Text } from '@chakra-ui/react'
-import { FileContext } from '../../hooks/useFileContext'
+import { useFileContext } from '../../hooks/FileContext'
 
 const FileImage: FunctionComponent = () => {
-  const { file } = useContext(FileContext)
-
+  const { file } = useFileContext()
   return <Text fontSize="md">{file?.name}</Text>
 }
 

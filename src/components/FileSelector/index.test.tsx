@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { FileSelector } from '../FileSelector'
 import '@testing-library/jest-dom'
 
-jest.mock('../../hooks/useFileContext')
+jest.mock('../../hooks/FileContext')
 
 describe('FileSelector()', () => {
   beforeEach(() => {
