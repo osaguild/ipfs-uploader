@@ -5,13 +5,13 @@ import { Metadata, uploadFile } from '../../lib/pinata'
 import { FileNotSetError } from '../../errors'
 import { AxiosError } from 'axios'
 
-interface UploadProps {
+interface UploadButtonProps {
   success: (metadata: Metadata) => void
   failed: (message: string) => void
   pinataApiJwt: string
 }
 
-const Upload: FunctionComponent<UploadProps> = ({ success, failed, pinataApiJwt }) => {
+const UploadButton: FunctionComponent<UploadButtonProps> = ({ success, failed, pinataApiJwt }) => {
   const { file } = useFileContext()
 
   const click = async () => {
@@ -35,10 +35,16 @@ const Upload: FunctionComponent<UploadProps> = ({ success, failed, pinataApiJwt 
   }
 
   return (
-    <Button colorScheme="teal" variant="solid" onClick={click} disabled={file ? false : true}>
+    <Button
+      colorScheme="teal"
+      variant="solid"
+      onClick={click}
+      disabled={file ? false : true}
+      data-testid="upload-button"
+    >
       Upload
     </Button>
   )
 }
 
-export { Upload }
+export { UploadButton, UploadButtonProps }

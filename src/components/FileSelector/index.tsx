@@ -15,10 +15,16 @@ const FileSelector: FunctionComponent = () => {
 
   return (
     <div>
-      <Button colorScheme="teal" variant="solid" onClick={click} disabled={file ? true : false}>
+      <Button
+        colorScheme="teal"
+        variant="solid"
+        onClick={click}
+        disabled={file ? true : false}
+        data-testid="file-selector-button"
+      >
         Select
       </Button>
-      <input hidden ref={fileInput} type="file" onChange={handleChange} />
+      <input hidden ref={fileInput} type="file" onChange={handleChange} data-testid="file-selector-input"/>
     </div>
   )
 }

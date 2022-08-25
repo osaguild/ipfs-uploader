@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react'
 import { ChakraProvider } from '@chakra-ui/react'
 import { FileSelector } from '../FileSelector'
 import { FileImage } from '../FileImage'
-import { Upload } from '../Upload'
+import { UploadButton } from '../UploadButton'
 import { FileContext, useFileProvider } from '../../hooks/FileContext'
 
 interface IpfsUploaderProps {
@@ -15,7 +15,7 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({ pinataApiJwt }) =>
       <FileContext.Provider value={useFileProvider()}>
         <FileSelector />
         <FileImage />
-        <Upload
+        <UploadButton
           success={(metadata) => console.log('success', metadata)}
           failed={(message) => console.log('failed', message)}
           pinataApiJwt={pinataApiJwt}
