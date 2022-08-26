@@ -43,8 +43,8 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({ pinataApiJwt, call
     <ChakraProvider>
       <FileContext.Provider value={useFileProvider()}>
         <FileSelector fileSelected={fileSelected} />
-        <FileImage />
         <UploadButton fileUploaded={fileUploaded} fileUploadFailed={fileUploadFailed} pinataApiJwt={pinataApiJwt} />
+        <FileImage />
       </FileContext.Provider>
     </ChakraProvider>
   )
