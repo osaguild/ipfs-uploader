@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react'
 import { Button } from '@chakra-ui/react'
 import { useFileContext } from '../../hooks/FileContext'
 import { Metadata, uploadFile } from '../../lib/pinata'
-import { FileNotSetError } from '../../errors'
+import { FileNotSetError } from '../../errors/FileNotSetError'
 import { AxiosError } from 'axios'
 
 interface UploadButtonProps {
