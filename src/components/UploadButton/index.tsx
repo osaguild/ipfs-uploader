@@ -12,13 +12,15 @@ interface UploadButtonProps {
 }
 
 const UploadButton: FunctionComponent<UploadButtonProps> = ({ success, failed, pinataApiJwt }) => {
-  const { file } = useFileContext()
+  const { file, setFile } = useFileContext()
 
   const click = async () => {
     try {
-      if (file) {
+      if (file && setFile) {
         const metadata = await uploadFile('image', file, pinataApiJwt)
         success(metadata)
+        // clear file
+        setFile(undefined)
       } else {
         throw new FileNotSetError('')
       }

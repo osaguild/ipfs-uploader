@@ -2,7 +2,7 @@ import { createContext, Dispatch, useState, useContext } from 'react'
 
 type FileState = {
   file: File | undefined
-  setFile: Dispatch<File> | undefined
+  setFile: Dispatch<File | undefined> | undefined
 }
 
 const initialize: FileState = {
