@@ -9,6 +9,8 @@ export default {
   component: IpfsUploader,
 } as ComponentMeta<typeof IpfsUploader>
 
-const Template: ComponentStory<typeof IpfsUploader> = () => <IpfsUploader pinataApiJwt={PINATA_API_JWT} />
+const Template: ComponentStory<typeof IpfsUploader> = () => (
+  <IpfsUploader pinataApiJwt={PINATA_API_JWT} callback={() => true} />
+)
 
 export const Default = Template.bind({})

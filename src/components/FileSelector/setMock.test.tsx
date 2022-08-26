@@ -7,7 +7,7 @@ jest.mock('../../hooks/FileContext')
 describe('FileSelector() set mock', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    render(<FileSelector />)
+    render(<FileSelector fileSelected={() => true} />)
   })
   it('button is disabled', () => {
     expect(screen.getByTestId('file-selector-button')).toBeDisabled()

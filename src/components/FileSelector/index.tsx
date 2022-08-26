@@ -2,12 +2,19 @@ import { FunctionComponent, createRef, ChangeEvent } from 'react'
 import { Button } from '@chakra-ui/react'
 import { useFileContext } from '../../hooks/FileContext'
 
-const FileSelector: FunctionComponent = () => {
+interface FileSelectorProps {
+  fileSelected: (file: File) => void
+}
+
+const FileSelector: FunctionComponent<FileSelectorProps> = ({ fileSelected }) => {
   const fileInput = createRef<HTMLInputElement>()
   const { file, setFile } = useFileContext()
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (setFile && event.target.files?.[0]) setFile(event.target.files?.[0])
+    if (setFile && event.target.files?.[0]) {
+      setFile(event.target.files?.[0])
+      fileSelected(event.target.files?.[0])
+    }
   }
   const click = () => {
     fileInput.current?.click()
@@ -29,4 +36,4 @@ const FileSelector: FunctionComponent = () => {
   )
 }
 
-export { FileSelector }
+export { FileSelector, FileSelectorProps }
