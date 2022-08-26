@@ -1,4 +1,4 @@
-import { Metadata } from '../pinata'
+import { Metadata } from '..'
 
 const uploadFile = async (fileName: string, file: File | NodeJS.ReadableStream, jwt: string) => {
   console.log('[mock]uploadFile is called. fileName:', fileName, 'file:', file, 'jwt:', jwt)

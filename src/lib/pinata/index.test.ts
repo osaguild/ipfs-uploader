@@ -1,4 +1,4 @@
-import { uploadFile } from './pinata'
+import { uploadFile } from '.'
 import fs from 'fs'
 import 'dotenv/config'
 
