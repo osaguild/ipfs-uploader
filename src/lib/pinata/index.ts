@@ -1,4 +1,3 @@
-import { globalConfig } from '../config'
 import FormData from 'form-data'
 import axios, { AxiosResponse } from 'axios'
 
@@ -10,20 +9,20 @@ type Metadata = {
   Timestamp: string
 }
 
-const uploadFile = async (fileName: string, file: File | NodeJS.ReadableStream) => {
-  const generateConfig = () => {
+const uploadFile = async (fileName: string, file: File | NodeJS.ReadableStream, jwt: string) => {
+  const generateConfig = (_jwt: string) => {
     return {
       headers: {
-        Authorization: `Bearer ${globalConfig().REACT_APP_PINATA_API_JWT}`,
+        Authorization: `Bearer ${_jwt}`,
       },
     }
   }
 
-  const generateData = (fileName: string, file: File | NodeJS.ReadableStream) => {
+  const generateData = (_fileName: string, _file: File | NodeJS.ReadableStream) => {
     const form = new FormData()
-    form.append('file', file)
+    form.append('file', _file)
     form.append('pinataOptions', '{"cidVersion": 1}')
-    form.append('pinataMetadata', `{"name": "${fileName}", "keyvalues": {"company": "Pinata"}}`)
+    form.append('pinataMetadata', `{"name": "${_fileName}", "keyvalues": {"company": "Pinata"}}`)
     return form
   }
 
@@ -31,7 +30,7 @@ const uploadFile = async (fileName: string, file: File | NodeJS.ReadableStream) 
   const res = await axios.post<Metadata, AxiosResponse<Metadata, FormData>, FormData>(
     PINATA_API_URI,
     generateData(fileName, file),
-    generateConfig()
+    generateConfig(jwt)
   )
   return res.data
 }
