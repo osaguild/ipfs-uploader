@@ -10,7 +10,7 @@ export default {
 } as ComponentMeta<typeof IpfsUploader>
 
 const Template: ComponentStory<typeof IpfsUploader> = () => (
-  <IpfsUploader pinataApiJwt={PINATA_API_JWT} callback={() => true} />
+  <IpfsUploader pinataApiJwt={PINATA_API_JWT} callback={(event) => console.log(event.eventType)} />
 )
 
 export const Default = Template.bind({})

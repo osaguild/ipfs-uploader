@@ -6,32 +6,29 @@ import { FileNotSetError } from '../../errors/FileNotSetError'
 import { AxiosError } from 'axios'
 
 interface UploadButtonProps {
-  success: (metadata: Metadata) => void
-  failed: (message: string) => void
+  fileUploaded: (file: File, metadata: Metadata) => void
+  fileUploadFailed: (file: File, message: string) => void
   pinataApiJwt: string
 }
 
-const UploadButton: FunctionComponent<UploadButtonProps> = ({ success, failed, pinataApiJwt }) => {
+const UploadButton: FunctionComponent<UploadButtonProps> = ({ fileUploaded, fileUploadFailed, pinataApiJwt }) => {
   const { file, setFile } = useFileContext()
 
   const click = async () => {
+    if (!file || !setFile) throw new FileNotSetError('')
     try {
-      if (file && setFile) {
-        const metadata = await uploadFile('image', file, pinataApiJwt)
-        success(metadata)
-        // clear file
-        setFile(undefined)
-      } else {
-        throw new FileNotSetError('')
-      }
+      const metadata = await uploadFile('image', file, pinataApiJwt)
+      fileUploaded(file, metadata)
+      // clear file
+      setFile(undefined)
     } catch (e) {
       if (e instanceof FileNotSetError) {
-        failed("Your file isn't set. Please select file again.")
+        fileUploadFailed(file, "file isn't set")
       } else if (e instanceof AxiosError) {
         console.log(e.message)
-        failed('File upload is failed.')
+        fileUploadFailed(file, 'pinata api call is failed')
       } else {
-        throw e
+        fileUploadFailed(file, 'unknown error')
       }
     }
   }

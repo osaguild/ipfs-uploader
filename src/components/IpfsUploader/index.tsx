@@ -4,7 +4,8 @@ import { FileSelector } from '../FileSelector'
 import { FileImage } from '../FileImage'
 import { UploadButton } from '../UploadButton'
 import { FileContext, useFileProvider } from '../../hooks/FileContext'
-import { Event, FileSelectedEvent } from './event'
+import { Event, FileSelectedEvent, FileUploadedEvent, FileUploadFailedEvent } from './event'
+import { Metadata } from '../../lib/pinata'
 
 interface IpfsUploaderProps {
   pinataApiJwt: string
@@ -16,7 +17,24 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({ pinataApiJwt, call
     const event: FileSelectedEvent = {
       eventType: 'FILE_SELECTED',
       file,
-      message: 'File is selected',
+    }
+    callback(event)
+  }
+
+  const fileUploaded = (file: File, metadata: Metadata) => {
+    const event: FileUploadedEvent = {
+      eventType: 'FILE_UPLOADED',
+      file,
+      metadata,
+    }
+    callback(event)
+  }
+
+  const fileUploadFailed = (file: File, message: string) => {
+    const event: FileUploadFailedEvent = {
+      eventType: 'FILE_UPLOAD_FAILED',
+      file,
+      message,
     }
     callback(event)
   }
@@ -26,11 +44,7 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({ pinataApiJwt, call
       <FileContext.Provider value={useFileProvider()}>
         <FileSelector fileSelected={fileSelected} />
         <FileImage />
-        <UploadButton
-          success={(metadata) => console.log('success', metadata)}
-          failed={(message) => console.log('failed', message)}
-          pinataApiJwt={pinataApiJwt}
-        />
+        <UploadButton fileUploaded={fileUploaded} fileUploadFailed={fileUploadFailed} pinataApiJwt={pinataApiJwt} />
       </FileContext.Provider>
     </ChakraProvider>
   )
