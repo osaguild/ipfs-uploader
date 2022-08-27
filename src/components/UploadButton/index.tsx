@@ -15,7 +15,7 @@ interface UploadButtonProps {
 }
 
 const UploadButton: FunctionComponent<UploadButtonProps> = ({ fileUploaded, fileUploadFailed, pinataApiJwt }) => {
-  const { file, setFile } = useFileContext()
+  const { file, fileName, setFile } = useFileContext()
   const { name, description } = useTokenContext()
 
   const generateFormData = (_fileName: string, _file: File) => {
@@ -48,10 +48,10 @@ const UploadButton: FunctionComponent<UploadButtonProps> = ({ fileUploaded, file
   }
 
   const click = async () => {
-    if (!file || !setFile || !name || !description) throw new FileNotSetError('')
+    if (!file || !fileName || !setFile || !name || !description) throw new FileNotSetError('')
     try {
       // upload File to Pinata
-      const uploadedFile = await uploadFile(generateFormData(file.name, file), pinataApiJwt)
+      const uploadedFile = await uploadFile(generateFormData(fileName, file), pinataApiJwt)
       fileUploaded(file, uploadedFile)
 
       // upload Metadata to Pinata
