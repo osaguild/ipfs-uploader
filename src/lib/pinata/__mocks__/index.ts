@@ -1,7 +1,8 @@
 import { Metadata } from '..'
 
-const uploadFile = async (fileName: string, file: File | NodeJS.ReadableStream, jwt: string) => {
-  console.log('[mock]uploadFile is called. fileName:', fileName, 'file:', file, 'jwt:', jwt)
+const uploadData = async <T = FormData | string>(data: T, jwt: string) => {
+  console.log('[mock]pinata.uploadData() is called.')
+  console.log('[param]data:', data, 'jwt:', jwt)
   return {
     IpfsHash: 'qazwsx',
     PinSize: 1000,
@@ -9,4 +10,4 @@ const uploadFile = async (fileName: string, file: File | NodeJS.ReadableStream, 
   } as Metadata
 }
 
-export { uploadFile }
+export { uploadData }

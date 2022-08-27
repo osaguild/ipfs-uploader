@@ -4,8 +4,9 @@ import { FileState } from '..'
 const initialize = {
   file: new File(['test'], 'sample.jpeg'),
   dataUrl: '	data:image/jpeg',
-  setFile: (value: File) => {
-    console.log('File:', value)
+  setFile: (file: File) => {
+    console.log('[mock]FileContext.setFile() is called.')
+    console.log('[param]file:', file)
   },
 } as FileState
 

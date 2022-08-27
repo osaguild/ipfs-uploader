@@ -9,7 +9,7 @@ type Metadata = {
   Timestamp: string
 }
 
-const uploadFile = async (fileName: string, file: File | NodeJS.ReadableStream, jwt: string) => {
+const uploadData = async <T = FormData | string>(data: T, jwt: string) => {
   const generateConfig = (_jwt: string) => {
     return {
       headers: {
@@ -18,21 +18,9 @@ const uploadFile = async (fileName: string, file: File | NodeJS.ReadableStream, 
     }
   }
 
-  const generateData = (_fileName: string, _file: File | NodeJS.ReadableStream) => {
-    const form = new FormData()
-    form.append('file', _file)
-    form.append('pinataOptions', '{"cidVersion": 1}')
-    form.append('pinataMetadata', `{"name": "${_fileName}", "keyvalues": {"company": "Pinata"}}`)
-    return form
-  }
-
   // if http status isn't equal 200, throw AxiosError
-  const res = await axios.post<Metadata, AxiosResponse<Metadata, FormData>, FormData>(
-    PINATA_API_URI,
-    generateData(fileName, file),
-    generateConfig(jwt)
-  )
+  const res = await axios.post<Metadata, AxiosResponse<Metadata, T>, T>(PINATA_API_URI, data, generateConfig(jwt))
   return res.data
 }
 
-export { uploadFile, Metadata }
+export { uploadData, Metadata }
