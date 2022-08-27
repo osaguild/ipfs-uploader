@@ -1,4 +1,4 @@
-import { Metadata } from '../../lib/pinata'
+import { PinataMetadata } from '../../lib/pinata'
 
 type EventType = 'FILE_SELECTED' | 'FILE_UPLOADED' | 'FILE_UPLOAD_FAILED'
 
@@ -15,7 +15,7 @@ interface FileSelectedEvent extends Event {
 interface FileUploadedEvent extends Event {
   eventType: 'FILE_UPLOADED'
   file: File
-  metadata: Metadata
+  metadata: PinataMetadata
 }
 
 interface FileUploadFailedEvent extends Event {

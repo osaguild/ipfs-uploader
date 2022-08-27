@@ -1,14 +1,16 @@
 import { createContext, useContext, useState } from 'react'
 import { FileState } from '..'
 
-const initialize = {
-  file: new File(['test'], 'sample.jpeg'),
+const initialize: FileState = {
+  file: new File(['test'], 'sample.jpeg', {
+    type: 'image/jpeg',
+  }),
   dataUrl: '	data:image/jpeg',
-  setFile: (file: File) => {
+  setFile: (file: File | undefined) => {
     console.log('[mock]FileContext.setFile() is called.')
     console.log('[param]file:', file)
   },
-} as FileState
+}
 
 const FileContext = createContext(initialize)
 

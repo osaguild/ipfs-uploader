@@ -1,4 +1,5 @@
-import { uploadData } from '.'
+import { uploadFile, uploadJson } from '.'
+import { Erc721MetadataStandard } from '../../components/UploadButton/erc721'
 import fs from 'fs'
 import FormData from 'form-data'
 import 'dotenv/config'
@@ -7,13 +8,37 @@ jest.setTimeout(20000)
 
 const PINATA_API_JWT = process.env.REACT_APP_PINATA_API_JWT as string
 
-describe('upload()', () => {
+describe('uploadFile()', () => {
   it('[success]', async () => {
     const form = new FormData()
     form.append('file', fs.createReadStream('./data/sample.jpeg'))
     form.append('pinataOptions', '{"cidVersion": 1}')
     form.append('pinataMetadata', `{"name": "image_test", "keyvalues": {"company": "Pinata"}}`)
-    const res = await uploadData(form, PINATA_API_JWT)
+    const res = await uploadFile(form, PINATA_API_JWT)
+    expect(res.PinSize).toBeGreaterThan(0)
+  })
+})
+
+describe('uploadJson()', () => {
+  it('[success]', async () => {
+    const data = {
+      pinataOptions: {
+        cidVersion: 1,
+      },
+      pinataMetadata: {
+        name: 'test_image',
+        keyvalues: {
+          customKey: 'customValue',
+          customKey2: 'customValue2',
+        },
+      },
+      pinataContent: {
+        name: 'test name',
+        description: 'test description',
+        image: 'image_url',
+      } as Erc721MetadataStandard,
+    }
+    const res = await uploadJson(JSON.stringify(data), PINATA_API_JWT)
     expect(res.PinSize).toBeGreaterThan(0)
   })
 })

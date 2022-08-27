@@ -1,26 +1,46 @@
 import FormData from 'form-data'
 import axios, { AxiosResponse } from 'axios'
 
-const PINATA_API_URI = 'https://api.pinata.cloud/pinning/pinFileToIPFS'
+const PINATA_API_URI = 'https://api.pinata.cloud/pinning/'
 
-type Metadata = {
+type PinataMetadata = {
   IpfsHash: string
   PinSize: number
   Timestamp: string
 }
 
-const uploadData = async <T = FormData | string>(data: T, jwt: string) => {
-  const generateConfig = (_jwt: string) => {
-    return {
-      headers: {
-        Authorization: `Bearer ${_jwt}`,
-      },
-    }
+const uploadFile = async (file: FormData, jwt: string) => {
+  console.log('upload file is called')
+  const config = {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
   }
 
   // if http status isn't equal 200, throw AxiosError
-  const res = await axios.post<Metadata, AxiosResponse<Metadata, T>, T>(PINATA_API_URI, data, generateConfig(jwt))
+  const res = await axios.post<PinataMetadata, AxiosResponse<PinataMetadata, FormData>, FormData>(
+    PINATA_API_URI + 'pinFileToIPFS',
+    file,
+    config
+  )
   return res.data
 }
 
-export { uploadData, Metadata }
+const uploadJson = async (stringifiedJson: string, jwt: string) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
+    },
+  }
+
+  // if http status isn't equal 200, throw AxiosError
+  const res = await axios.post<PinataMetadata, AxiosResponse<PinataMetadata, string>, string>(
+    PINATA_API_URI + 'pinJSONToIPFS',
+    stringifiedJson,
+    config
+  )
+  return res.data
+}
+
+export { uploadFile, uploadJson, PinataMetadata }

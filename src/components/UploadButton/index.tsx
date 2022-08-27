@@ -1,18 +1,22 @@
 import { FunctionComponent } from 'react'
 import { Button } from '@chakra-ui/react'
 import { useFileContext } from '../../hooks/FileContext'
-import { Metadata, uploadData } from '../../lib/pinata'
+import { useTokenContext } from '../../hooks/TokenContext'
+import { PinataMetadata, uploadFile, uploadJson } from '../../lib/pinata'
 import { FileNotSetError } from '../../errors/FileNotSetError'
+import { Erc721MetadataStandard } from './erc721'
+import FormData from 'form-data'
 import { AxiosError } from 'axios'
 
 interface UploadButtonProps {
-  fileUploaded: (file: File, metadata: Metadata) => void
+  fileUploaded: (file: File, metadata: PinataMetadata) => void
   fileUploadFailed: (file: File, message: string) => void
   pinataApiJwt: string
 }
 
 const UploadButton: FunctionComponent<UploadButtonProps> = ({ fileUploaded, fileUploadFailed, pinataApiJwt }) => {
   const { file, setFile } = useFileContext()
+  const { name, description } = useTokenContext()
 
   const generateFormData = (_fileName: string, _file: File) => {
     const form = new FormData()
@@ -22,12 +26,41 @@ const UploadButton: FunctionComponent<UploadButtonProps> = ({ fileUploaded, file
     return form
   }
 
+  const generateJsonData = (_name: string, _description: string, _ipfsHash: string) => {
+    const imageUrl = `https://gateway.pinata.cloud/ipfs/${_ipfsHash}`
+    return {
+      pinataOptions: {
+        cidVersion: 1,
+      },
+      pinataMetadata: {
+        name: _name,
+        keyvalues: {
+          customKey: 'customValue',
+          customKey2: 'customValue2',
+        },
+      },
+      pinataContent: {
+        name: _name,
+        description: _description,
+        image: imageUrl,
+      } as Erc721MetadataStandard,
+    }
+  }
+
   const click = async () => {
-    if (!file || !setFile) throw new FileNotSetError('')
-    const formData = generateFormData(file.name, file)
+    if (!file || !setFile || !name || !description) throw new FileNotSetError('')
     try {
-      const metadata = await uploadData(formData, pinataApiJwt)
-      fileUploaded(file, metadata)
+      // upload File to Pinata
+      const uploadedFile = await uploadFile(generateFormData(file.name, file), pinataApiJwt)
+      fileUploaded(file, uploadedFile)
+
+      // upload Metadata to Pinata
+      const uploadedJson = await uploadJson(
+        JSON.stringify(generateJsonData(name, description, uploadedFile.IpfsHash)),
+        pinataApiJwt
+      )
+      fileUploaded(file, uploadedJson)
+
       // clear file
       setFile(undefined)
     } catch (e) {
@@ -48,7 +81,7 @@ const UploadButton: FunctionComponent<UploadButtonProps> = ({ fileUploaded, file
       variant="solid"
       onClick={click}
       disabled={file ? false : true}
-      data-testid="upload-button"
+      data-testid="upload-button-button"
     >
       Upload
     </Button>

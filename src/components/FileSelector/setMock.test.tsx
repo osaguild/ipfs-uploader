@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { FileSelector } from '../FileSelector'
+import { FileSelector } from '.'
 import '@testing-library/jest-dom'
 
 jest.mock('../../hooks/FileContext')

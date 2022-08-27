@@ -2,10 +2,12 @@ import { FunctionComponent } from 'react'
 import { ChakraProvider } from '@chakra-ui/react'
 import { FileSelector } from '../FileSelector'
 import { FileImage } from '../FileImage'
+import { TokenForm } from '../TokenForm'
 import { UploadButton } from '../UploadButton'
 import { FileContext, useFileProvider } from '../../hooks/FileContext'
+import { TokenContext, useTokenProvider } from '../../hooks/TokenContext'
 import { Event, FileSelectedEvent, FileUploadedEvent, FileUploadFailedEvent } from './event'
-import { Metadata } from '../../lib/pinata'
+import { PinataMetadata } from '../../lib/pinata'
 
 interface IpfsUploaderProps {
   pinataApiJwt: string
@@ -21,7 +23,7 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({ pinataApiJwt, call
     callback(event)
   }
 
-  const fileUploaded = (file: File, metadata: Metadata) => {
+  const fileUploaded = (file: File, metadata: PinataMetadata) => {
     const event: FileUploadedEvent = {
       eventType: 'FILE_UPLOADED',
       file,
@@ -43,7 +45,10 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({ pinataApiJwt, call
     <ChakraProvider>
       <FileContext.Provider value={useFileProvider()}>
         <FileSelector fileSelected={fileSelected} />
-        <UploadButton fileUploaded={fileUploaded} fileUploadFailed={fileUploadFailed} pinataApiJwt={pinataApiJwt} />
+        <TokenContext.Provider value={useTokenProvider()}>
+          <TokenForm />
+          <UploadButton fileUploaded={fileUploaded} fileUploadFailed={fileUploadFailed} pinataApiJwt={pinataApiJwt} />
+        </TokenContext.Provider>
         <FileImage />
       </FileContext.Provider>
     </ChakraProvider>
