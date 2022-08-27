@@ -15,7 +15,7 @@ describe('UploadButton()', () => {
     render(<UploadButton fileUploaded={() => true} fileUploadFailed={() => true} pinataApiJwt="dummy" />)
     expect(screen.getByTestId('upload-button-button')).not.toBeDisabled()
   })
-  
+
   /* comment out test why mock file become error on generateJsonData()
   it('click button', async () => {
     const fileUploaded = jest.fn(() => true)
