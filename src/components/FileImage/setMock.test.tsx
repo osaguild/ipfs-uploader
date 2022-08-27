@@ -10,7 +10,7 @@ describe('FileImage()', () => {
     render(<FileImage />)
   })
   it('text content is sample.jpeg', () => {
-    expect(screen.getByTestId('file-image-text')).toHaveTextContent('sample.jpeg')
+    expect(screen.getByTestId('file-image-file-name')).toHaveValue('sample_name')
     expect(screen.getByTestId('file-image-image')).toHaveAttribute('src')
   })
 })

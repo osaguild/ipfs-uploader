@@ -8,7 +8,7 @@ describe('FileImage()', () => {
     render(<FileImage />)
   })
   it('text content is nothing', () => {
-    expect(screen.queryByTestId('file-image-text')).toBeNull()
+    expect(screen.queryByTestId('file-image-file-name')).toBeNull()
     expect(screen.queryByTestId('file-image-image')).toBeNull()
   })
 })
