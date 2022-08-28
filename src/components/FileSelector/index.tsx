@@ -31,7 +31,14 @@ const FileSelector: FunctionComponent<FileSelectorProps> = ({ fileSelected }) =>
       >
         Select
       </Button>
-      <input hidden ref={fileInput} type="file" onChange={handleChange} data-testid="file-selector-input" />
+      <input
+        hidden
+        ref={fileInput}
+        type="file"
+        onChange={handleChange}
+        accept="image/*"
+        data-testid="file-selector-input"
+      />
     </div>
   )
 }
