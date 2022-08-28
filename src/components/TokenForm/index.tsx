@@ -35,7 +35,7 @@ const TokenForm: FunctionComponent = () => {
   const handleMetadataValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (setMetadataValue) setMetadataValue(e.target.value)
   }
-  
+
   return (
     <div>
       <Input
