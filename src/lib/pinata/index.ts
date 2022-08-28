@@ -1,6 +1,6 @@
 import FormData from 'form-data'
 import axios, { AxiosResponse } from 'axios'
-import { PinataMetadata } from '../../types/pinata'
+import { UploadLog } from '../../types/pinata'
 
 const PINATA_API_URI = 'https://api.pinata.cloud/pinning/'
 
@@ -13,7 +13,7 @@ const uploadFile = async (file: FormData, jwt: string) => {
   }
 
   // if http status isn't equal 200, throw AxiosError
-  const res = await axios.post<PinataMetadata, AxiosResponse<PinataMetadata, FormData>, FormData>(
+  const res = await axios.post<UploadLog, AxiosResponse<UploadLog, FormData>, FormData>(
     PINATA_API_URI + 'pinFileToIPFS',
     file,
     config
@@ -31,7 +31,7 @@ const uploadJson = async (stringifiedJson: string, jwt: string) => {
   }
 
   // if http status isn't equal 200, throw AxiosError
-  const res = await axios.post<PinataMetadata, AxiosResponse<PinataMetadata, string>, string>(
+  const res = await axios.post<UploadLog, AxiosResponse<UploadLog, string>, string>(
     PINATA_API_URI + 'pinJSONToIPFS',
     stringifiedJson,
     config

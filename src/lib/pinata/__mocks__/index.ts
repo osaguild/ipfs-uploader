@@ -1,4 +1,4 @@
-import { PinataMetadata } from '../../../types/pinata'
+import { UploadLog } from '../../../types/pinata'
 
 const uploadFile = async (file: FormData, jwt: string) => {
   console.log('[mock]pinata.uploadFile() is called.')
@@ -7,7 +7,7 @@ const uploadFile = async (file: FormData, jwt: string) => {
     IpfsHash: 'qazwsx',
     PinSize: 1000,
     Timestamp: '2022-01-01T00:00:00.000Z',
-  } as PinataMetadata
+  } as UploadLog
 }
 
 const uploadJson = async (stringifiedJson: string, jwt: string) => {
@@ -17,7 +17,7 @@ const uploadJson = async (stringifiedJson: string, jwt: string) => {
     IpfsHash: 'edcrfv',
     PinSize: 2000,
     Timestamp: '2022-02-01T00:00:00.000Z',
-  } as PinataMetadata
+  } as UploadLog
 }
 
 export { uploadFile, uploadJson }

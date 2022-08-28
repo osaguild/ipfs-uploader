@@ -1,7 +1,6 @@
 import { uploadFile, uploadJson } from '.'
-import { JsonUploadData } from '../../types/pinata'
+import { generateFormData, generateJsonData } from '../../components/UploadButton/generator'
 import fs from 'fs'
-import FormData from 'form-data'
 import 'dotenv/config'
 
 jest.setTimeout(20000)
@@ -9,36 +8,29 @@ jest.setTimeout(20000)
 const PINATA_API_JWT = process.env.REACT_APP_PINATA_API_JWT as string
 
 describe('uploadFile()', () => {
-  it('[success]', async () => {
-    const form = new FormData()
-    form.append('file', fs.createReadStream('./data/sample.jpeg'))
-    form.append('pinataOptions', '{"cidVersion": 1}')
-    form.append('pinataMetadata', `{"name": "image_test", "keyvalues": {"company": "Pinata"}}`)
-    const res = await uploadFile(form, PINATA_API_JWT)
+  it('[success]not set key value', async () => {
+    const formData = generateFormData(fs.createReadStream('./package.json'), 'image_test')
+    const res = await uploadFile(formData, PINATA_API_JWT)
+    expect(res.PinSize).toBeGreaterThan(0)
+  })
+
+  it('[success]set key value', async () => {
+    const formData = generateFormData(fs.createReadStream('./package.json'), 'image_test', 'label', 'test')
+    const res = await uploadFile(formData, PINATA_API_JWT)
     expect(res.PinSize).toBeGreaterThan(0)
   })
 })
 
 describe('uploadJson()', () => {
-  it('[success]', async () => {
-    const data: JsonUploadData = {
-      pinataOptions: {
-        cidVersion: 1,
-      },
-      pinataMetadata: {
-        name: 'test_image',
-        keyvalues: {
-          customKey: 'customValue',
-          customKey2: 'customValue2',
-        },
-      },
-      pinataContent: {
-        name: 'test name',
-        description: 'test description',
-        image: 'image_url',
-      },
-    }
-    const res = await uploadJson(JSON.stringify(data), PINATA_API_JWT)
+  it('[success]not set key value', async () => {
+    const jsonData = generateJsonData('test name', 'test description', 'image_url', 'test_image')
+    const res = await uploadJson(JSON.stringify(jsonData), PINATA_API_JWT)
+    expect(res.PinSize).toBeGreaterThan(0)
+  })
+
+  it('[success]set key value', async () => {
+    const jsonData = generateJsonData('test name', 'test description', 'image_url', 'test_image', 'label', 'test')
+    const res = await uploadJson(JSON.stringify(jsonData), PINATA_API_JWT)
     expect(res.PinSize).toBeGreaterThan(0)
   })
 })

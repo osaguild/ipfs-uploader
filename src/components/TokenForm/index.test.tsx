@@ -13,5 +13,7 @@ describe('TokenForm()', () => {
     expect(screen.getByTestId('token-form-name')).toHaveValue('')
     expect(screen.getByTestId('token-form-description')).toHaveValue('')
     expect(screen.getByTestId('token-form-metadata-name')).toHaveValue('')
+    expect(screen.getByTestId('token-form-metadata-key')).toHaveValue('')
+    expect(screen.getByTestId('token-form-metadata-value')).toHaveValue('')
   })
 })

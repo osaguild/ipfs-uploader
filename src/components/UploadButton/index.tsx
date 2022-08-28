@@ -4,47 +4,19 @@ import { useFileContext } from '../../hooks/FileContext'
 import { useTokenContext } from '../../hooks/TokenContext'
 import { uploadFile, uploadJson } from '../../lib/pinata'
 import { ValidationError } from '../../errors'
-import { JsonUploadData, PinataMetadata } from '../../types/pinata'
-import FormData from 'form-data'
+import { JsonUploadData, UploadLog } from '../../types/pinata'
+import { generateFormData, generateJsonData } from './generator'
 import { AxiosError } from 'axios'
 
 interface UploadButtonProps {
-  fileUploaded: (data: JsonUploadData | File, metadata: PinataMetadata) => void
+  fileUploaded: (data: JsonUploadData | File, log: UploadLog) => void
   fileUploadFailed: (message: string) => void
   pinataApiJwt: string
 }
 
 const UploadButton: FunctionComponent<UploadButtonProps> = ({ fileUploaded, fileUploadFailed, pinataApiJwt }) => {
   const { file, fileName, setFile } = useFileContext()
-  const { name, description, metadataName } = useTokenContext()
-
-  const generateFormData = (_fileName: string, _file: File) => {
-    const form = new FormData()
-    form.append('file', _file)
-    form.append('pinataOptions', '{"cidVersion": 1}')
-    form.append('pinataMetadata', `{"name": "${_fileName}", "keyvalues": {"company": "Pinata"}}`)
-    return form
-  }
-
-  const generateJsonData = (_name: string, _description: string, _ipfsHash: string, _metadataName?: string) => {
-    return {
-      pinataOptions: {
-        cidVersion: 1,
-      },
-      pinataMetadata: {
-        name: _metadataName ? _metadataName : _name,
-        keyvalues: {
-          customKey: 'customValue',
-          customKey2: 'customValue2',
-        },
-      },
-      pinataContent: {
-        name: _name,
-        description: _description,
-        image: `https://gateway.pinata.cloud/ipfs/${_ipfsHash}`,
-      },
-    } as JsonUploadData
-  }
+  const { name, description, metadataName, metadataKey, metadataValue } = useTokenContext()
 
   const click = async () => {
     // validation
@@ -54,13 +26,21 @@ const UploadButton: FunctionComponent<UploadButtonProps> = ({ fileUploaded, file
 
     try {
       // upload File to Pinata
-      const uploadedFile = await uploadFile(generateFormData(fileName, file), pinataApiJwt)
-      fileUploaded(file, uploadedFile)
+      const formData = generateFormData(file, fileName, metadataKey, metadataValue)
+      const uploadFileLog = await uploadFile(formData, pinataApiJwt)
+      fileUploaded(file, uploadFileLog)
 
       // upload Metadata to Pinata
-      const jsonData = generateJsonData(name, description, uploadedFile.IpfsHash, metadataName)
-      const uploadedJson = await uploadJson(JSON.stringify(jsonData), pinataApiJwt)
-      fileUploaded(jsonData, uploadedJson)
+      const jsonData = generateJsonData(
+        name,
+        description,
+        uploadFileLog.IpfsHash,
+        metadataName ? metadataName : name,
+        metadataKey,
+        metadataValue
+      )
+      const uploadJsonLog = await uploadJson(JSON.stringify(jsonData), pinataApiJwt)
+      fileUploaded(jsonData, uploadJsonLog)
 
       // clear file
       setFile(undefined)

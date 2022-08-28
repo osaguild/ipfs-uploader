@@ -1,18 +1,23 @@
-type JsonUploadData = {
-  pinataOptions: {
-    cidVersion: 1
-  }
-  pinataMetadata: {
-    name: string
-    keyvalues: {
-      customKey: string
-      customKey2: string
-    }
-  }
+interface JsonUploadData {
+  pinataOptions: PinataOptions
+  pinataMetadata: PinataMetadata
   pinataContent: Erc721MetadataStandard
 }
 
-type PinataMetadata = {
+interface PinataOptions {
+  cidVersion: 0 | 1
+}
+
+interface PinataMetadata {
+  name: string
+}
+
+interface PinataMetadataWithKeyValue extends PinataMetadata {
+  name: string
+  keyvalues: object
+}
+
+type UploadLog = {
   IpfsHash: string
   PinSize: number
   Timestamp: string
@@ -24,4 +29,4 @@ interface Erc721MetadataStandard {
   image: string
 }
 
-export { JsonUploadData, PinataMetadata, Erc721MetadataStandard }
+export { JsonUploadData, PinataOptions, PinataMetadata, PinataMetadataWithKeyValue, UploadLog, Erc721MetadataStandard }

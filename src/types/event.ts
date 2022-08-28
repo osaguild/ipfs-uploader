@@ -1,4 +1,4 @@
-import { PinataMetadata, JsonUploadData } from './pinata'
+import { UploadLog, JsonUploadData } from './pinata'
 
 type EventType = 'FILE_SELECTED' | 'UPLOADED' | 'UPLOAD_FAILED'
 
@@ -14,7 +14,7 @@ interface FileSelectedEvent extends Event {
 interface UploadedEvent extends Event {
   eventType: 'UPLOADED'
   data: File | JsonUploadData
-  metadata: PinataMetadata
+  log: UploadLog
 }
 
 interface UploadFailedEvent extends Event {
