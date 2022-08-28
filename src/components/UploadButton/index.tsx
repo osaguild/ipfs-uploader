@@ -16,7 +16,7 @@ interface UploadButtonProps {
 
 const UploadButton: FunctionComponent<UploadButtonProps> = ({ fileUploaded, fileUploadFailed, pinataApiJwt }) => {
   const { file, fileName, setFile } = useFileContext()
-  const { name, description } = useTokenContext()
+  const { name, description, metadataName } = useTokenContext()
 
   const generateFormData = (_fileName: string, _file: File) => {
     const form = new FormData()
@@ -26,13 +26,13 @@ const UploadButton: FunctionComponent<UploadButtonProps> = ({ fileUploaded, file
     return form
   }
 
-  const generateJsonData = (_name: string, _description: string, _ipfsHash: string) => {
+  const generateJsonData = (_name: string, _description: string, _ipfsHash: string, _metadataName?: string) => {
     return {
       pinataOptions: {
         cidVersion: 1,
       },
       pinataMetadata: {
-        name: _name,
+        name: _metadataName ? _metadataName : _name,
         keyvalues: {
           customKey: 'customValue',
           customKey2: 'customValue2',
@@ -58,7 +58,7 @@ const UploadButton: FunctionComponent<UploadButtonProps> = ({ fileUploaded, file
       fileUploaded(file, uploadedFile)
 
       // upload Metadata to Pinata
-      const jsonData = generateJsonData(name, description, uploadedFile.IpfsHash)
+      const jsonData = generateJsonData(name, description, uploadedFile.IpfsHash, metadataName)
       const uploadedJson = await uploadJson(JSON.stringify(jsonData), pinataApiJwt)
       fileUploaded(jsonData, uploadedJson)
 

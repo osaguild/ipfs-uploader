@@ -12,5 +12,6 @@ describe('TokenForm()', () => {
   it('default value is empty', () => {
     expect(screen.getByTestId('token-form-name')).toHaveValue('')
     expect(screen.getByTestId('token-form-description')).toHaveValue('')
+    expect(screen.getByTestId('token-form-metadata-name')).toHaveValue('')
   })
 })

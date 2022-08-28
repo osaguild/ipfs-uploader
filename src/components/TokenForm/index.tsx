@@ -3,7 +3,7 @@ import { useTokenContext } from '../../hooks/TokenContext'
 import { Input } from '@chakra-ui/react'
 
 const TokenForm: FunctionComponent = () => {
-  const { name, description, setName, setDescription } = useTokenContext()
+  const { name, description, metadataName, setName, setDescription, setMetadataName } = useTokenContext()
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (setName) setName(e.target.value)
@@ -11,6 +11,10 @@ const TokenForm: FunctionComponent = () => {
 
   const handleDescriptionChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (setDescription) setDescription(e.target.value)
+  }
+
+  const handleMetadataNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (setMetadataName) setMetadataName(e.target.value)
   }
 
   return (
@@ -28,6 +32,13 @@ const TokenForm: FunctionComponent = () => {
         value={description}
         onChange={handleDescriptionChange}
         data-testid="token-form-description"
+      />
+      <Input
+        placeholder="metadata name"
+        size="md"
+        value={metadataName}
+        onChange={handleMetadataNameChange}
+        data-testid="token-form-metadata-name"
       />
     </div>
   )

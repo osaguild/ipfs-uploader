@@ -13,5 +13,6 @@ describe('TokenForm()', () => {
   it('default value', () => {
     expect(screen.getByTestId('token-form-name')).toHaveValue('Sample Token')
     expect(screen.getByTestId('token-form-description')).toHaveValue('Description of Sample Token')
+    expect(screen.getByTestId('token-form-metadata-name')).toHaveValue('Sample Metadata')
   })
 })
