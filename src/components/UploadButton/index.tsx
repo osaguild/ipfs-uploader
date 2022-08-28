@@ -2,15 +2,15 @@ import { FunctionComponent } from 'react'
 import { Button } from '@chakra-ui/react'
 import { useFileContext } from '../../hooks/FileContext'
 import { useTokenContext } from '../../hooks/TokenContext'
-import { PinataMetadata, uploadFile, uploadJson } from '../../lib/pinata'
-import { FileNotSetError } from '../../errors/FileNotSetError'
-import { Erc721MetadataStandard } from './erc721'
+import { uploadFile, uploadJson } from '../../lib/pinata'
+import { ValidationError } from '../../errors'
+import { JsonUploadData, PinataMetadata } from '../../types/pinata'
 import FormData from 'form-data'
 import { AxiosError } from 'axios'
 
 interface UploadButtonProps {
-  fileUploaded: (file: File, metadata: PinataMetadata) => void
-  fileUploadFailed: (file: File, message: string) => void
+  fileUploaded: (data: JsonUploadData | File, metadata: PinataMetadata) => void
+  fileUploadFailed: (message: string) => void
   pinataApiJwt: string
 }
 
@@ -27,7 +27,6 @@ const UploadButton: FunctionComponent<UploadButtonProps> = ({ fileUploaded, file
   }
 
   const generateJsonData = (_name: string, _description: string, _ipfsHash: string) => {
-    const imageUrl = `https://gateway.pinata.cloud/ipfs/${_ipfsHash}`
     return {
       pinataOptions: {
         cidVersion: 1,
@@ -42,35 +41,37 @@ const UploadButton: FunctionComponent<UploadButtonProps> = ({ fileUploaded, file
       pinataContent: {
         name: _name,
         description: _description,
-        image: imageUrl,
-      } as Erc721MetadataStandard,
-    }
+        image: `https://gateway.pinata.cloud/ipfs/${_ipfsHash}`,
+      },
+    } as JsonUploadData
   }
 
   const click = async () => {
-    if (!file || !fileName || !setFile || !name || !description) throw new FileNotSetError('')
+    // validation
+    if (!file || !fileName || !setFile) throw new ValidationError('File not set')
+    else if (!name) throw new ValidationError('name is not set')
+    else if (!description) throw new ValidationError('description is not set')
+
     try {
       // upload File to Pinata
       const uploadedFile = await uploadFile(generateFormData(fileName, file), pinataApiJwt)
       fileUploaded(file, uploadedFile)
 
       // upload Metadata to Pinata
-      const uploadedJson = await uploadJson(
-        JSON.stringify(generateJsonData(name, description, uploadedFile.IpfsHash)),
-        pinataApiJwt
-      )
-      fileUploaded(file, uploadedJson)
+      const jsonData = generateJsonData(name, description, uploadedFile.IpfsHash)
+      const uploadedJson = await uploadJson(JSON.stringify(jsonData), pinataApiJwt)
+      fileUploaded(jsonData, uploadedJson)
 
       // clear file
       setFile(undefined)
     } catch (e) {
-      if (e instanceof FileNotSetError) {
-        fileUploadFailed(file, "file isn't set")
+      console.log(e)
+      if (e instanceof ValidationError) {
+        fileUploadFailed(e.message)
       } else if (e instanceof AxiosError) {
-        console.log(e.message)
-        fileUploadFailed(file, 'pinata api call is failed')
+        fileUploadFailed('pinata api call is failed')
       } else {
-        fileUploadFailed(file, 'unknown error')
+        fileUploadFailed('unknown error')
       }
     }
   }

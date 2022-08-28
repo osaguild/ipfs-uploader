@@ -6,9 +6,8 @@ import { TokenForm } from '../TokenForm'
 import { UploadButton } from '../UploadButton'
 import { FileContext, useFileProvider } from '../../hooks/FileContext'
 import { TokenContext, useTokenProvider } from '../../hooks/TokenContext'
-import { Event, FileSelectedEvent, FileUploadedEvent, FileUploadFailedEvent } from './event'
-import { PinataMetadata } from '../../lib/pinata'
-
+import { Event, FileSelectedEvent, UploadedEvent, UploadFailedEvent } from '../../types/event'
+import { PinataMetadata, JsonUploadData } from '../../types/pinata'
 interface IpfsUploaderProps {
   pinataApiJwt: string
   callback: (event: Event) => void
@@ -23,19 +22,18 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({ pinataApiJwt, call
     callback(event)
   }
 
-  const fileUploaded = (file: File, metadata: PinataMetadata) => {
-    const event: FileUploadedEvent = {
-      eventType: 'FILE_UPLOADED',
-      file,
+  const fileUploaded = (data: File | JsonUploadData, metadata: PinataMetadata) => {
+    const event: UploadedEvent = {
+      eventType: 'UPLOADED',
+      data,
       metadata,
     }
     callback(event)
   }
 
-  const fileUploadFailed = (file: File, message: string) => {
-    const event: FileUploadFailedEvent = {
-      eventType: 'FILE_UPLOAD_FAILED',
-      file,
+  const fileUploadFailed = (message: string) => {
+    const event: UploadFailedEvent = {
+      eventType: 'UPLOAD_FAILED',
       message,
     }
     callback(event)

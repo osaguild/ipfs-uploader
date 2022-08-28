@@ -1,5 +1,5 @@
 import { uploadFile, uploadJson } from '.'
-import { Erc721MetadataStandard } from '../../components/UploadButton/erc721'
+import { JsonUploadData } from '../../types/pinata'
 import fs from 'fs'
 import FormData from 'form-data'
 import 'dotenv/config'
@@ -21,7 +21,7 @@ describe('uploadFile()', () => {
 
 describe('uploadJson()', () => {
   it('[success]', async () => {
-    const data = {
+    const data: JsonUploadData = {
       pinataOptions: {
         cidVersion: 1,
       },
@@ -36,7 +36,7 @@ describe('uploadJson()', () => {
         name: 'test name',
         description: 'test description',
         image: 'image_url',
-      } as Erc721MetadataStandard,
+      },
     }
     const res = await uploadJson(JSON.stringify(data), PINATA_API_JWT)
     expect(res.PinSize).toBeGreaterThan(0)

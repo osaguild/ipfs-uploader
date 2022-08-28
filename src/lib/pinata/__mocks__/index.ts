@@ -1,4 +1,4 @@
-import { PinataMetadata } from '..'
+import { PinataMetadata } from '../../../types/pinata'
 
 const uploadFile = async (file: FormData, jwt: string) => {
   console.log('[mock]pinata.uploadFile() is called.')
@@ -20,4 +20,4 @@ const uploadJson = async (stringifiedJson: string, jwt: string) => {
   } as PinataMetadata
 }
 
-export { uploadFile, uploadJson, PinataMetadata }
+export { uploadFile, uploadJson }
