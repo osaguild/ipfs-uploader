@@ -8,7 +8,7 @@ jest.setTimeout(10000)
 describe('TokenForm()', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    render(<TokenForm />)
+    render(<TokenForm enableMetadataName={true} enableKeyValue={true} />)
   })
   it('default value', () => {
     expect(screen.getByTestId('token-form-name')).toHaveValue('Sample Token')
