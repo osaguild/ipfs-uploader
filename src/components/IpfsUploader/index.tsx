@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react'
 import { ChakraProvider, Stack } from '@chakra-ui/react'
 import { FileSelector } from '../FileSelector'
-import { FileImage } from '../FileImage'
+import { FileImage, Size } from '../FileImage'
 import { TokenForm } from '../TokenForm'
 import { UploadButton } from '../UploadButton'
 import { FileContext, useFileProvider } from '../../hooks/FileContext'
@@ -14,6 +14,7 @@ interface IpfsUploaderProps {
   callback: (event: Event) => void
   enableMetadata: boolean
   enableChangeName: boolean
+  imageSize: Size
 }
 
 const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({
@@ -21,6 +22,7 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({
   callback,
   enableMetadata,
   enableChangeName,
+  imageSize,
 }) => {
   const fileSelected = (file: File) => {
     const event: FileSelectedEvent = {
@@ -52,7 +54,7 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({
       <FileContext.Provider value={useFileProvider()}>
         <TokenContext.Provider value={useTokenProvider()}>
           <TokenForm enableMetadataName={enableMetadata} enableKeyValue={enableMetadata} />
-          <FileImage enableChangeName={enableChangeName} />
+          <FileImage enableChangeName={enableChangeName} imageSize={imageSize} />
           <Stack spacing="2" direction="row" justify="center" mt="2">
             <FileSelector fileSelected={fileSelected} />
             <UploadButton fileUploaded={fileUploaded} fileUploadFailed={fileUploadFailed} pinataApiJwt={pinataApiJwt} />

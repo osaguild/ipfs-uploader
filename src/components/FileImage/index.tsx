@@ -4,9 +4,12 @@ import { useFileContext } from '../../hooks/FileContext'
 
 interface FileImageProps {
   enableChangeName: boolean
+  imageSize: Size
 }
 
-const FileImage: FunctionComponent<FileImageProps> = ({ enableChangeName }) => {
+type Size = 's' | 'm' | 'l'
+
+const FileImage: FunctionComponent<FileImageProps> = ({ enableChangeName, imageSize }) => {
   const { file, fileName, dataUrl, setFileName } = useFileContext()
 
   const handleFileNameChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -18,7 +21,11 @@ const FileImage: FunctionComponent<FileImageProps> = ({ enableChangeName }) => {
   return file ? (
     <>
       <Center>
-        <Image src={dataUrl} boxSize="100px" data-testid="file-image-image" />
+        <Image
+          src={dataUrl}
+          boxSize={imageSize === 's' ? '100px' : imageSize === 'l' ? '300px' : '200px'}
+          data-testid="file-image-image"
+        />
       </Center>
       {enableChangeName ? (
         <FormControl id="file-name" isInvalid={fileNameIsValid} isRequired>
@@ -43,4 +50,4 @@ const FileImage: FunctionComponent<FileImageProps> = ({ enableChangeName }) => {
   )
 }
 
-export { FileImage }
+export { FileImage, Size }

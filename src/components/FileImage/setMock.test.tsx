@@ -7,7 +7,7 @@ jest.mock('../../hooks/FileContext')
 describe('FileImage() with input', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    render(<FileImage enableChangeName={true} />)
+    render(<FileImage enableChangeName={true} imageSize="m" />)
   })
   it('text content is sample.jpeg', () => {
     expect(screen.queryByTestId('file-image-image')).toHaveAttribute('src')
@@ -18,7 +18,7 @@ describe('FileImage() with input', () => {
 describe('FileImage() with text', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    render(<FileImage enableChangeName={false} />)
+    render(<FileImage enableChangeName={false} imageSize="m" />)
   })
   it('text content is sample.jpeg', () => {
     expect(screen.queryByTestId('file-image-image')).toHaveAttribute('src')

@@ -15,6 +15,7 @@ const Template: ComponentStory<typeof IpfsUploader> = () => (
     callback={(event) => console.log('event is occurred:', event)}
     enableMetadata={false}
     enableChangeName={false}
+    imageSize="m"
   />
 )
 
