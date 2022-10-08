@@ -14,6 +14,7 @@ const Template: ComponentStory<typeof IpfsUploader> = () => (
     pinataApiJwt={PINATA_API_JWT}
     callback={(event) => console.log('event is occurred:', event)}
     enableMetadata={false}
+    enableChangeName={false}
   />
 )
 

@@ -4,13 +4,25 @@ import '@testing-library/jest-dom'
 
 jest.mock('../../hooks/FileContext')
 
-describe('FileImage()', () => {
+describe('FileImage() with input', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    render(<FileImage />)
+    render(<FileImage enableChangeName={true} />)
   })
   it('text content is sample.jpeg', () => {
-    expect(screen.getByTestId('file-image-file-name')).toHaveValue('sample_name')
-    expect(screen.getByTestId('file-image-image')).toHaveAttribute('src')
+    expect(screen.queryByTestId('file-image-image')).toHaveAttribute('src')
+    expect(screen.queryByTestId('file-image-file-name-input')).toHaveValue('sample_name')
+    expect(screen.queryByTestId('file-image-file-name-text')).toBeNull()
+  })
+})
+describe('FileImage() with text', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+    render(<FileImage enableChangeName={false} />)
+  })
+  it('text content is sample.jpeg', () => {
+    expect(screen.queryByTestId('file-image-image')).toHaveAttribute('src')
+    expect(screen.queryByTestId('file-image-file-name-input')).toBeNull()
+    expect(screen.queryByTestId('file-image-file-name-text')).toHaveTextContent('sample.jpeg')
   })
 })
