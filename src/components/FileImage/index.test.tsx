@@ -5,7 +5,7 @@ import '@testing-library/jest-dom'
 describe('FileImage() with input', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    render(<FileImage enableChangeName={true}/>)
+    render(<FileImage enableChangeName={true} />)
   })
   it('text content is nothing', () => {
     expect(screen.queryByTestId('file-image-image')).toBeNull()
@@ -16,7 +16,7 @@ describe('FileImage() with input', () => {
 describe('FileImage() with text', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    render(<FileImage enableChangeName={false}/>)
+    render(<FileImage enableChangeName={false} />)
   })
   it('text content is nothing', () => {
     expect(screen.queryByTestId('file-image-image')).toBeNull()
