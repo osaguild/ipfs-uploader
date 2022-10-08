@@ -12,7 +12,14 @@ describe('UploadButton()', () => {
     jest.clearAllMocks()
   })
   it('button is clickable', () => {
-    render(<UploadButton fileUploaded={() => true} fileUploadFailed={() => true} pinataApiJwt="dummy" />)
+    render(
+      <UploadButton
+        fileUploadStarted={() => true}
+        fileUploaded={() => true}
+        fileUploadFailed={() => true}
+        pinataApiJwt="dummy"
+      />
+    )
     expect(screen.getByTestId('upload-button-button')).not.toBeDisabled()
   })
 

@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useState } from 'react'
 import { ChakraProvider, Stack } from '@chakra-ui/react'
 import { FileSelector } from '../FileSelector'
 import { FileImage, Size } from '../FileImage'
@@ -24,6 +24,8 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({
   enableChangeName,
   imageSize,
 }) => {
+  const [disabledForm, setDisabledForm] = useState(false)
+
   const fileSelected = (file: File) => {
     const event: FileSelectedEvent = {
       eventType: 'FILE_SELECTED',
@@ -33,6 +35,7 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({
   }
 
   const fileUploaded = (data: File | JsonUploadData, log: UploadLog) => {
+    setDisabledForm(false)
     const event: UploadedEvent = {
       eventType: 'UPLOADED',
       data,
@@ -42,6 +45,7 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({
   }
 
   const fileUploadFailed = (message: string) => {
+    setDisabledForm(false)
     const event: UploadFailedEvent = {
       eventType: 'UPLOAD_FAILED',
       message,
@@ -49,15 +53,24 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({
     callback(event)
   }
 
+  const fileUploadStarted = () => {
+    setDisabledForm(true)
+  }
+
   return (
     <ChakraProvider>
       <FileContext.Provider value={useFileProvider()}>
         <TokenContext.Provider value={useTokenProvider()}>
-          <TokenForm enableMetadataName={enableMetadata} enableKeyValue={enableMetadata} />
-          <FileImage enableChangeName={enableChangeName} imageSize={imageSize} />
+          <TokenForm enableMetadataName={enableMetadata} enableKeyValue={enableMetadata} disable={disabledForm} />
+          <FileImage enableChangeName={enableChangeName} imageSize={imageSize} disable={disabledForm} />
           <Stack spacing="2" direction="row" justify="center" mt="2">
             <FileSelector fileSelected={fileSelected} />
-            <UploadButton fileUploaded={fileUploaded} fileUploadFailed={fileUploadFailed} pinataApiJwt={pinataApiJwt} />
+            <UploadButton
+              fileUploadStarted={fileUploadStarted}
+              fileUploaded={fileUploaded}
+              fileUploadFailed={fileUploadFailed}
+              pinataApiJwt={pinataApiJwt}
+            />
           </Stack>
         </TokenContext.Provider>
       </FileContext.Provider>

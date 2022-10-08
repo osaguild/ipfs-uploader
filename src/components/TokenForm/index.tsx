@@ -5,9 +5,10 @@ import { Input, FormControl, FormLabel, FormErrorMessage } from '@chakra-ui/reac
 interface TokenFormProps {
   enableMetadataName: boolean
   enableKeyValue: boolean
+  disable: boolean
 }
 
-const TokenForm: FunctionComponent<TokenFormProps> = ({ enableMetadataName, enableKeyValue }) => {
+const TokenForm: FunctionComponent<TokenFormProps> = ({ enableMetadataName, enableKeyValue, disable }) => {
   const {
     name,
     description,
@@ -53,6 +54,7 @@ const TokenForm: FunctionComponent<TokenFormProps> = ({ enableMetadataName, enab
           size="md"
           value={name}
           onChange={handleNameChange}
+          disabled={disable}
           data-testid="token-form-name"
         />
         {nameIsValid && <FormErrorMessage>name is required</FormErrorMessage>}
@@ -64,6 +66,7 @@ const TokenForm: FunctionComponent<TokenFormProps> = ({ enableMetadataName, enab
           size="md"
           value={description}
           onChange={handleDescriptionChange}
+          disabled={disable}
           data-testid="token-form-description"
         />
         {descriptionIsValid && <FormErrorMessage>description is required</FormErrorMessage>}
@@ -76,6 +79,7 @@ const TokenForm: FunctionComponent<TokenFormProps> = ({ enableMetadataName, enab
             size="md"
             value={metadataName}
             onChange={handleMetadataNameChange}
+            disabled={disable}
             data-testid="token-form-metadata-name"
           />
         </FormControl>
@@ -89,6 +93,7 @@ const TokenForm: FunctionComponent<TokenFormProps> = ({ enableMetadataName, enab
               size="md"
               value={metadataKey}
               onChange={handleMetadataKeyChange}
+              disabled={disable}
               data-testid="token-form-metadata-key"
             />
           </FormControl>
@@ -99,6 +104,7 @@ const TokenForm: FunctionComponent<TokenFormProps> = ({ enableMetadataName, enab
               size="md"
               value={metadataValue}
               onChange={handleMetadataValueChange}
+              disabled={disable}
               data-testid="token-form-metadata-value"
             />
           </FormControl>

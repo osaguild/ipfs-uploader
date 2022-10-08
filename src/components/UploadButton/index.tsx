@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useState } from 'react'
 import { Button } from '@chakra-ui/react'
 import { useFileContext } from '../../hooks/FileContext'
 import { useTokenContext } from '../../hooks/TokenContext'
@@ -9,12 +9,19 @@ import { generateFormData, generateJsonData } from './generator'
 import { AxiosError } from 'axios'
 
 interface UploadButtonProps {
+  fileUploadStarted: () => void
   fileUploaded: (data: JsonUploadData | File, log: UploadLog) => void
   fileUploadFailed: (message: string) => void
   pinataApiJwt: string
 }
 
-const UploadButton: FunctionComponent<UploadButtonProps> = ({ fileUploaded, fileUploadFailed, pinataApiJwt }) => {
+const UploadButton: FunctionComponent<UploadButtonProps> = ({
+  fileUploadStarted,
+  fileUploaded,
+  fileUploadFailed,
+  pinataApiJwt,
+}) => {
+  const [loading, setLoading] = useState(false)
   const { file, fileName, setFile } = useFileContext()
   const { name, description, metadataName, metadataKey, metadataValue } = useTokenContext()
 
@@ -25,6 +32,10 @@ const UploadButton: FunctionComponent<UploadButtonProps> = ({ fileUploaded, file
     else if (!description) throw new ValidationError('description is not set')
 
     try {
+      // start upload
+      fileUploadStarted()
+      setLoading(true)
+
       // upload File to Pinata
       const formData = generateFormData(file, fileName, metadataKey, metadataValue)
       const uploadFileLog = await uploadFile(formData, pinataApiJwt)
@@ -42,8 +53,9 @@ const UploadButton: FunctionComponent<UploadButtonProps> = ({ fileUploaded, file
       const uploadJsonLog = await uploadJson(JSON.stringify(jsonData), pinataApiJwt)
       fileUploaded(jsonData, uploadJsonLog)
 
-      // clear file
+      // end upload
       setFile(undefined)
+      setLoading(false)
     } catch (e) {
       console.log(e)
       if (e instanceof ValidationError) {
@@ -53,6 +65,7 @@ const UploadButton: FunctionComponent<UploadButtonProps> = ({ fileUploaded, file
       } else {
         fileUploadFailed('unknown error')
       }
+      setLoading(false)
     }
   }
 
@@ -61,8 +74,9 @@ const UploadButton: FunctionComponent<UploadButtonProps> = ({ fileUploaded, file
       colorScheme="teal"
       variant="solid"
       onClick={click}
-      disabled={file ? false : true}
+      disabled={!file ? true : loading ? true : false}
       width="100"
+      isLoading={loading}
       data-testid="upload-button-button"
     >
       Upload
