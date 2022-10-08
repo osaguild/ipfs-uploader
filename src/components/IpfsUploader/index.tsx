@@ -1,13 +1,17 @@
 import { FunctionComponent, useState } from 'react'
 import { ChakraProvider, Stack } from '@chakra-ui/react'
-import { FileSelector } from '../FileSelector'
-import { FileImage, Size } from '../FileImage'
+import { ImageSelector } from '../ImageSelector'
+import { ImageView } from '../ImageView'
+import { AudioSelector } from '../AudioSelector'
+import { AudioView } from '../AudioView'
 import { TokenForm } from '../TokenForm'
 import { UploadButton } from '../UploadButton'
-import { FileContext, useFileProvider } from '../../hooks/FileContext'
+import { ImageContext, useImageProvider } from '../../hooks/ImageContext'
+import { AudioContext, useAudioProvider } from '../../hooks/AudioContext'
 import { TokenContext, useTokenProvider } from '../../hooks/TokenContext'
 import { Event, FileSelectedEvent, UploadedEvent, UploadFailedEvent } from '../../types/event'
 import { UploadLog, JsonUploadData } from '../../types/pinata'
+import { Pattern, Size } from '../../types/common'
 
 interface IpfsUploaderProps {
   pinataApiJwt: string
@@ -15,6 +19,7 @@ interface IpfsUploaderProps {
   enableMetadata: boolean
   enableChangeName: boolean
   imageSize: Size
+  pattern: Pattern
 }
 
 const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({
@@ -23,6 +28,7 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({
   enableMetadata,
   enableChangeName,
   imageSize,
+  pattern,
 }) => {
   const [disabledForm, setDisabledForm] = useState(false)
 
@@ -59,21 +65,26 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({
 
   return (
     <ChakraProvider>
-      <FileContext.Provider value={useFileProvider()}>
-        <TokenContext.Provider value={useTokenProvider()}>
-          <TokenForm enableMetadataName={enableMetadata} enableKeyValue={enableMetadata} disable={disabledForm} />
-          <FileImage enableChangeName={enableChangeName} imageSize={imageSize} disable={disabledForm} />
-          <Stack spacing="2" direction="row" justify="center" mt="2">
-            <FileSelector fileSelected={fileSelected} />
-            <UploadButton
-              fileUploadStarted={fileUploadStarted}
-              fileUploaded={fileUploaded}
-              fileUploadFailed={fileUploadFailed}
-              pinataApiJwt={pinataApiJwt}
-            />
-          </Stack>
-        </TokenContext.Provider>
-      </FileContext.Provider>
+      <ImageContext.Provider value={useImageProvider()}>
+        <AudioContext.Provider value={useAudioProvider()}>
+          <TokenContext.Provider value={useTokenProvider()}>
+            <TokenForm enableMetadataName={enableMetadata} enableKeyValue={enableMetadata} disable={disabledForm} />
+            <ImageView enableChangeName={enableChangeName} imageSize={imageSize} disable={disabledForm} />
+            {pattern === 'audio' && <AudioView enableChangeName={enableChangeName} disable={disabledForm} />}
+            <Stack spacing="2" direction="row" justify="center" mt="2">
+              <ImageSelector imageSelected={fileSelected} />
+              {pattern === 'audio' && <AudioSelector audioSelected={fileSelected} />}
+              <UploadButton
+                fileUploadStarted={fileUploadStarted}
+                fileUploaded={fileUploaded}
+                fileUploadFailed={fileUploadFailed}
+                pinataApiJwt={pinataApiJwt}
+                pattern={pattern}
+              />
+            </Stack>
+          </TokenContext.Provider>
+        </AudioContext.Provider>
+      </ImageContext.Provider>
     </ChakraProvider>
   )
 }

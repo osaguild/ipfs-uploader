@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { IpfsUploader } from '.'
+import { IpfsUploader } from '../'
 import 'dotenv/config'
 
 const PINATA_API_JWT = process.env.REACT_APP_PINATA_API_JWT as string
@@ -15,8 +15,9 @@ const Template: ComponentStory<typeof IpfsUploader> = () => (
     callback={(event) => console.log('event is occurred:', event)}
     enableMetadata={false}
     enableChangeName={true}
-    imageSize="s"
+    imageSize="m"
+    pattern="audio"
   />
 )
 
-export const ImageSizeS = Template.bind({})
+export const AudioEnableChangeName = Template.bind({})

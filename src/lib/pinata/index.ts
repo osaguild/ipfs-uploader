@@ -5,7 +5,6 @@ import { UploadLog } from '../../types/pinata'
 const PINATA_API_URI = 'https://api.pinata.cloud/pinning/'
 
 const uploadFile = async (file: FormData, jwt: string) => {
-  console.log('uploading file to pinata:', file)
   const config = {
     headers: {
       Authorization: `Bearer ${jwt}`,
@@ -22,7 +21,6 @@ const uploadFile = async (file: FormData, jwt: string) => {
 }
 
 const uploadJson = async (stringifiedJson: string, jwt: string) => {
-  console.log('uploading json to pinata:', stringifiedJson)
   const config = {
     headers: {
       'Content-Type': 'application/json',

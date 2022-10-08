@@ -30,16 +30,24 @@ const generateFormData = (
 const generateJsonData = (
   name: string,
   description: string,
-  ipfsHash: string,
+  ipfsHashOfImage: string,
+  ipfsHashOfAudio: string | undefined,
   metadataName: string,
   metadataKey?: string,
   metadataValue?: string
 ) => {
-  const pinataContent = {
-    name: name,
-    description: description,
-    image: `https://gateway.pinata.cloud/ipfs/${ipfsHash}`,
-  }
+  const pinataContent = ipfsHashOfAudio
+    ? {
+        name: name,
+        description: description,
+        image: `https://gateway.pinata.cloud/ipfs/${ipfsHashOfImage}`,
+        animation_url: `https://gateway.pinata.cloud/ipfs/${ipfsHashOfAudio}`,
+      }
+    : {
+        name: name,
+        description: description,
+        image: `https://gateway.pinata.cloud/ipfs/${ipfsHashOfImage}`,
+      }
   return {
     pinataOptions: pinataOptions,
     pinataMetadata: pinataMetadata(metadataName, metadataKey, metadataValue),
