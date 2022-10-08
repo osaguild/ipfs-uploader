@@ -42,5 +42,5 @@ yarn add @chakra-ui/react @emotion/react @emotion/styled axios framer-motion -D
 ```yarn
 yarn rollup
 yarn login
-yarn publish
+yarn publish --access=public
 ```
