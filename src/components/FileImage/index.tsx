@@ -1,5 +1,5 @@
 import { FunctionComponent, ChangeEvent } from 'react'
-import { Input, Image, Text } from '@chakra-ui/react'
+import { Input, Image, Text, FormControl, FormLabel, FormErrorMessage, Center } from '@chakra-ui/react'
 import { useFileContext } from '../../hooks/FileContext'
 
 interface FileImageProps {
@@ -13,21 +13,31 @@ const FileImage: FunctionComponent<FileImageProps> = ({ enableChangeName }) => {
     if (setFileName) setFileName(e.target.value)
   }
 
+  const fileNameIsValid = !fileName ? true : fileName?.length === 0 ? true : false
+
   return file ? (
-    <div>
-      <Image src={dataUrl} boxSize="100px" data-testid="file-image-image" />
+    <>
+      <Center>
+        <Image src={dataUrl} boxSize="100px" data-testid="file-image-image" />
+      </Center>
       {enableChangeName ? (
-        <Input
-          placeholder={file.name}
-          size="md"
-          value={fileName}
-          onChange={handleFileNameChange}
-          data-testid="file-image-file-name-input"
-        />
+        <FormControl id="file-name" isInvalid={fileNameIsValid} isRequired>
+          <FormLabel>file name</FormLabel>
+          <Input
+            placeholder={file.name}
+            size="md"
+            value={fileName}
+            onChange={handleFileNameChange}
+            data-testid="file-image-file-name-input"
+          />
+          {fileNameIsValid && <FormErrorMessage>file name is required</FormErrorMessage>}
+        </FormControl>
       ) : (
-        <Text data-testid="file-image-file-name-text">{file.name}</Text>
+        <Text textAlign="center" data-testid="file-image-file-name-text">
+          {file.name}
+        </Text>
       )}
-    </div>
+    </>
   ) : (
     <></>
   )

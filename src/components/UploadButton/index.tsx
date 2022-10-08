@@ -62,6 +62,7 @@ const UploadButton: FunctionComponent<UploadButtonProps> = ({ fileUploaded, file
       variant="solid"
       onClick={click}
       disabled={file ? false : true}
+      width="100"
       data-testid="upload-button-button"
     >
       Upload

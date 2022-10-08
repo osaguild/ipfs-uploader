@@ -21,12 +21,13 @@ const FileSelector: FunctionComponent<FileSelectorProps> = ({ fileSelected }) =>
   }
 
   return (
-    <div>
+    <>
       <Button
         colorScheme="teal"
         variant="solid"
         onClick={click}
         disabled={file ? true : false}
+        width="100"
         data-testid="file-selector-button"
       >
         Select
@@ -39,7 +40,7 @@ const FileSelector: FunctionComponent<FileSelectorProps> = ({ fileSelected }) =>
         accept="image/*"
         data-testid="file-selector-input"
       />
-    </div>
+    </>
   )
 }
 

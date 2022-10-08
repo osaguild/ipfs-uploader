@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react'
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, Stack } from '@chakra-ui/react'
 import { FileSelector } from '../FileSelector'
 import { FileImage } from '../FileImage'
 import { TokenForm } from '../TokenForm'
@@ -50,12 +50,14 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({
   return (
     <ChakraProvider>
       <FileContext.Provider value={useFileProvider()}>
-        <FileSelector fileSelected={fileSelected} />
         <TokenContext.Provider value={useTokenProvider()}>
           <TokenForm enableMetadataName={enableMetadata} enableKeyValue={enableMetadata} />
-          <UploadButton fileUploaded={fileUploaded} fileUploadFailed={fileUploadFailed} pinataApiJwt={pinataApiJwt} />
+          <FileImage enableChangeName={enableChangeName} />
+          <Stack spacing="2" direction="row" justify="center" mt="2">
+            <FileSelector fileSelected={fileSelected} />
+            <UploadButton fileUploaded={fileUploaded} fileUploadFailed={fileUploadFailed} pinataApiJwt={pinataApiJwt} />
+          </Stack>
         </TokenContext.Provider>
-        <FileImage enableChangeName={enableChangeName} />
       </FileContext.Provider>
     </ChakraProvider>
   )
