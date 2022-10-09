@@ -1,11 +1,11 @@
 import { createContext, Dispatch, useState, useContext } from 'react'
 
 type TokenState = {
-  name: string | undefined
-  description: string | undefined
-  metadataName: string | undefined
-  metadataKey: string | undefined
-  metadataValue: string | undefined
+  name: string
+  description: string
+  metadataName: string
+  metadataKey: string
+  metadataValue: string
   setName: Dispatch<string | undefined> | undefined
   setDescription: Dispatch<string | undefined> | undefined
   setMetadataName: Dispatch<string | undefined> | undefined
@@ -14,11 +14,11 @@ type TokenState = {
 }
 
 const initialize: TokenState = {
-  name: undefined,
-  description: undefined,
-  metadataName: undefined,
-  metadataKey: undefined,
-  metadataValue: undefined,
+  name: '',
+  description: '',
+  metadataName: '',
+  metadataKey: '',
+  metadataValue: '',
   setName: undefined,
   setDescription: undefined,
   setMetadataName: undefined,

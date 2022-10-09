@@ -42,8 +42,11 @@ const TokenForm: FunctionComponent<TokenFormProps> = ({ enableMetadataName, enab
     if (setMetadataValue) setMetadataValue(e.target.value)
   }
 
-  const nameIsValid = !name ? true : name?.length === 0 ? true : false
-  const descriptionIsValid = !description ? true : description?.length === 0 ? true : false
+  const nameIsValid = name.length === 0 ? true : false
+  const descriptionIsValid = description.length === 0 ? true : false
+  const metadataNameIsValid = metadataName.length === 0 ? true : false
+  const metadataKeyIsValid = metadataValue.length === 0 && metadataKey.length !== 0 ? true : false
+  const metadataValueIsValid = metadataKey.length === 0 && metadataValue.length !== 0 ? true : false
 
   return (
     <>
@@ -72,7 +75,7 @@ const TokenForm: FunctionComponent<TokenFormProps> = ({ enableMetadataName, enab
         {descriptionIsValid && <FormErrorMessage>description is required</FormErrorMessage>}
       </FormControl>
       {enableMetadataName && (
-        <FormControl id="metadata-name">
+        <FormControl id="metadata-name" isInvalid={metadataNameIsValid}>
           <FormLabel>metadata name</FormLabel>
           <Input
             placeholder="metadata 001"
@@ -82,11 +85,12 @@ const TokenForm: FunctionComponent<TokenFormProps> = ({ enableMetadataName, enab
             disabled={disable}
             data-testid="token-form-metadata-name"
           />
+          {metadataNameIsValid && <FormErrorMessage>metadata name is required</FormErrorMessage>}
         </FormControl>
       )}
       {enableKeyValue && (
         <>
-          <FormControl id="metadata-key">
+          <FormControl id="metadata-key" isInvalid={metadataKeyIsValid}>
             <FormLabel>metadata key</FormLabel>
             <Input
               placeholder="category"
@@ -96,8 +100,9 @@ const TokenForm: FunctionComponent<TokenFormProps> = ({ enableMetadataName, enab
               disabled={disable}
               data-testid="token-form-metadata-key"
             />
+            {metadataKeyIsValid && <FormErrorMessage>should key and value set pairs</FormErrorMessage>}
           </FormControl>
-          <FormControl id="metadata-value">
+          <FormControl id="metadata-value" isInvalid={metadataValueIsValid}>
             <FormLabel>metadata value</FormLabel>
             <Input
               placeholder="art"
@@ -107,6 +112,7 @@ const TokenForm: FunctionComponent<TokenFormProps> = ({ enableMetadataName, enab
               disabled={disable}
               data-testid="token-form-metadata-value"
             />
+            {metadataValueIsValid && <FormErrorMessage>should key and value set pairs</FormErrorMessage>}
           </FormControl>
         </>
       )}
