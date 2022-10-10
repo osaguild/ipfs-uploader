@@ -7,7 +7,7 @@ jest.mock('../../hooks/ImageContext')
 describe('ImageSelector() set mock', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    render(<ImageSelector imageSelected={() => true} />)
+    render(<ImageSelector selected={() => true} />)
   })
   it('button is disabled', () => {
     expect(screen.getByTestId('image-selector-button')).toBeDisabled()
