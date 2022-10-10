@@ -7,7 +7,7 @@ jest.mock('../../hooks/AudioContext')
 describe('AudioSelector() set mock', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    render(<AudioSelector audioSelected={() => true} />)
+    render(<AudioSelector selected={() => true} />)
   })
   it('button is disabled', () => {
     expect(screen.getByTestId('audio-selector-button')).toBeDisabled()

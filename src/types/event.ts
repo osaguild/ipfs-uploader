@@ -1,25 +1,34 @@
 import { UploadLog, JsonUploadData } from './pinata'
 
-type EventType = 'FILE_SELECTED' | 'UPLOADED' | 'UPLOAD_FAILED'
+type EventType = 'SELECTED' | 'UPLOADING' | 'SUCCESS' | 'FAILED'
+type DataType = 'IMAGE' | 'AUDIO'
+type UploadedData = {
+  data: File | JsonUploadData
+  log: UploadLog
+}
 
 interface Event {
   eventType: EventType
 }
 
-interface FileSelectedEvent extends Event {
-  eventType: 'FILE_SELECTED'
+interface SelectedEvent extends Event {
+  eventType: 'SELECTED'
+  dataType: DataType
   file: File
 }
 
-interface UploadedEvent extends Event {
-  eventType: 'UPLOADED'
-  data: File | JsonUploadData
-  log: UploadLog
+interface UploadingEvent extends Event {
+  eventType: 'UPLOADING'
 }
 
-interface UploadFailedEvent extends Event {
-  eventType: 'UPLOAD_FAILED'
+interface SuccessEvent extends Event {
+  eventType: 'SUCCESS'
+  uploadedData: UploadedData[]
+}
+
+interface FailedEvent extends Event {
+  eventType: 'FAILED'
   message: string
 }
 
-export { Event, FileSelectedEvent, UploadedEvent, UploadFailedEvent }
+export { EventType, DataType, UploadedData, Event, SelectedEvent, UploadingEvent, SuccessEvent, FailedEvent }

@@ -15,9 +15,9 @@ describe('UploadButton()', () => {
   it('button is clickable when image is set', () => {
     render(
       <UploadButton
-        fileUploadStarted={() => true}
-        fileUploaded={() => true}
-        fileUploadFailed={() => true}
+        uploading={() => true}
+        success={() => true}
+        failed={() => true}
         pinataApiJwt="dummy"
         pattern="image"
       />
@@ -27,9 +27,9 @@ describe('UploadButton()', () => {
   it('button is clickable when image and audio are set', () => {
     render(
       <UploadButton
-        fileUploadStarted={() => true}
-        fileUploaded={() => true}
-        fileUploadFailed={() => true}
+        uploading={() => true}
+        success={() => true}
+        failed={() => true}
         pinataApiJwt="dummy"
         pattern="audio"
       />

@@ -3,17 +3,17 @@ import { Button } from '@chakra-ui/react'
 import { useImageContext } from '../../hooks/ImageContext'
 
 interface ImageSelectorProps {
-  imageSelected: (image: File) => void
+  selected: (image: File) => void
 }
 
-const ImageSelector: FunctionComponent<ImageSelectorProps> = ({ imageSelected }) => {
+const ImageSelector: FunctionComponent<ImageSelectorProps> = ({ selected }) => {
   const imageInput = createRef<HTMLInputElement>()
   const { image, setImage } = useImageContext()
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (setImage && event.target.files?.[0]) {
       setImage(event.target.files?.[0])
-      imageSelected(event.target.files?.[0])
+      selected(event.target.files?.[0])
     }
   }
   const click = () => {

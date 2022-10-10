@@ -5,7 +5,7 @@ import '@testing-library/jest-dom'
 describe('ImageSelector()', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    render(<ImageSelector imageSelected={() => true} />)
+    render(<ImageSelector selected={() => true} />)
   })
   it('button is clickable', () => {
     expect(screen.getByTestId('image-selector-button')).not.toBeDisabled()

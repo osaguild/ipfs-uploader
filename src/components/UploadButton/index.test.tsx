@@ -14,9 +14,9 @@ describe('UploadButton()', () => {
   it('button is not clickable', () => {
     render(
       <UploadButton
-        fileUploadStarted={() => true}
-        fileUploaded={() => true}
-        fileUploadFailed={() => true}
+        uploading={() => true}
+        success={() => true}
+        failed={() => true}
         pinataApiJwt={PINATA_API_JWT}
         pattern="image"
       />
