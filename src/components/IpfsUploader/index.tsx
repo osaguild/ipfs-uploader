@@ -9,8 +9,7 @@ import { UploadButton } from '../UploadButton'
 import { ImageContext, useImageProvider } from '../../hooks/ImageContext'
 import { AudioContext, useAudioProvider } from '../../hooks/AudioContext'
 import { TokenContext, useTokenProvider } from '../../hooks/TokenContext'
-import { Event, FileSelectedEvent, UploadedEvent, UploadFailedEvent } from '../../types/event'
-import { UploadLog, JsonUploadData } from '../../types/pinata'
+import { UploadedData, Event, SelectedEvent, UploadingEvent, SuccessEvent, FailedEvent } from '../../types/event'
 import { Pattern, Size } from '../../types/common'
 
 interface IpfsUploaderProps {
@@ -32,35 +31,48 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({
 }) => {
   const [disabledForm, setDisabledForm] = useState(false)
 
-  const fileSelected = (file: File) => {
-    const event: FileSelectedEvent = {
-      eventType: 'FILE_SELECTED',
+  const imageSelected = (file: File) => {
+    const event: SelectedEvent = {
+      eventType: 'SELECTED',
+      dataType: 'IMAGE',
       file,
     }
     callback(event)
   }
 
-  const fileUploaded = (data: File | JsonUploadData, log: UploadLog) => {
-    setDisabledForm(false)
-    const event: UploadedEvent = {
-      eventType: 'UPLOADED',
-      data,
-      log,
+  const audioSelected = (file: File) => {
+    const event: SelectedEvent = {
+      eventType: 'SELECTED',
+      dataType: 'AUDIO',
+      file,
     }
     callback(event)
   }
 
-  const fileUploadFailed = (message: string) => {
+  const uploading = () => {
+    const event: UploadingEvent = {
+      eventType: 'UPLOADING',
+    }
+    callback(event)
+    setDisabledForm(true)
+  }
+
+  const success = (uploadedData: UploadedData[]) => {
     setDisabledForm(false)
-    const event: UploadFailedEvent = {
-      eventType: 'UPLOAD_FAILED',
+    const event: SuccessEvent = {
+      eventType: 'SUCCESS',
+      uploadedData,
+    }
+    callback(event)
+  }
+
+  const failed = (message: string) => {
+    setDisabledForm(false)
+    const event: FailedEvent = {
+      eventType: 'FAILED',
       message,
     }
     callback(event)
-  }
-
-  const fileUploadStarted = () => {
-    setDisabledForm(true)
   }
 
   return (
@@ -72,12 +84,12 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({
             <ImageView enableChangeName={enableChangeName} imageSize={imageSize} disable={disabledForm} />
             {pattern === 'audio' && <AudioView enableChangeName={enableChangeName} disable={disabledForm} />}
             <Stack spacing="2" direction="row" justify="center" mt="2">
-              <ImageSelector imageSelected={fileSelected} />
-              {pattern === 'audio' && <AudioSelector audioSelected={fileSelected} />}
+              <ImageSelector selected={imageSelected} />
+              {pattern === 'audio' && <AudioSelector selected={audioSelected} />}
               <UploadButton
-                fileUploadStarted={fileUploadStarted}
-                fileUploaded={fileUploaded}
-                fileUploadFailed={fileUploadFailed}
+                uploading={uploading}
+                success={success}
+                failed={failed}
                 pinataApiJwt={pinataApiJwt}
                 pattern={pattern}
               />

@@ -5,26 +5,20 @@ import { useAudioContext } from '../../hooks/AudioContext'
 import { useTokenContext } from '../../hooks/TokenContext'
 import { uploadFile, uploadJson } from '../../lib/pinata'
 import { ValidationError } from '../../errors'
-import { JsonUploadData, UploadLog } from '../../types/pinata'
 import { generateFormData, generateJsonData } from './generator'
 import { AxiosError } from 'axios'
 import { Pattern } from '../../types/common'
+import { UploadedData } from '../../types/event'
 
 interface UploadButtonProps {
-  fileUploadStarted: () => void
-  fileUploaded: (data: JsonUploadData | File, log: UploadLog) => void
-  fileUploadFailed: (message: string) => void
+  uploading: () => void
+  success: (uploadedData: UploadedData[]) => void
+  failed: (message: string) => void
   pinataApiJwt: string
   pattern: Pattern
 }
 
-const UploadButton: FunctionComponent<UploadButtonProps> = ({
-  fileUploadStarted,
-  fileUploaded,
-  fileUploadFailed,
-  pinataApiJwt,
-  pattern,
-}) => {
+const UploadButton: FunctionComponent<UploadButtonProps> = ({ uploading, success, failed, pinataApiJwt, pattern }) => {
   const [loading, setLoading] = useState(false)
   const { image, imageName, setImage } = useImageContext()
   const { audio, audioName, setAudio } = useAudioContext()
@@ -41,20 +35,21 @@ const UploadButton: FunctionComponent<UploadButtonProps> = ({
 
     try {
       // start upload
-      fileUploadStarted()
+      uploading()
       setLoading(true)
+      const uploadedData: UploadedData[] = []
 
       // upload image to pinata
       const imageData = generateFormData(image, imageName, metadataKey, metadataValue)
       const uploadImageLog = await uploadFile(imageData, pinataApiJwt)
-      fileUploaded(image, uploadImageLog)
+      uploadedData.push({ data: image, log: uploadImageLog })
 
       // upload audio to Pinata
       let uploadAudioLog = undefined
-      if (pattern === 'audio') {
-        const audioData = generateFormData(audio as File, audioName as string, metadataKey, metadataValue)
+      if (pattern === 'audio' && audio) {
+        const audioData = generateFormData(audio, audioName as string, metadataKey, metadataValue)
         uploadAudioLog = await uploadFile(audioData, pinataApiJwt)
-        fileUploaded(image, uploadAudioLog)
+        uploadedData.push({ data: audio, log: uploadAudioLog })
       }
 
       // upload metadata to pinata
@@ -68,19 +63,20 @@ const UploadButton: FunctionComponent<UploadButtonProps> = ({
         metadataValue !== '' ? metadataValue : undefined
       )
       const uploadJsonLog = await uploadJson(JSON.stringify(jsonData), pinataApiJwt)
-      fileUploaded(jsonData, uploadJsonLog)
+      uploadedData.push({ data: jsonData, log: uploadJsonLog })
 
       // end upload
+      success(uploadedData)
       setImage(undefined)
       setLoading(false)
     } catch (e) {
       console.log(e)
       if (e instanceof ValidationError) {
-        fileUploadFailed(e.message)
+        failed(e.message)
       } else if (e instanceof AxiosError) {
-        fileUploadFailed('pinata api call is failed')
+        failed('pinata api call is failed')
       } else {
-        fileUploadFailed('unknown error')
+        failed('unknown error')
       }
       setLoading(false)
     }
