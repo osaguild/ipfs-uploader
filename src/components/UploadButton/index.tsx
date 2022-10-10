@@ -32,10 +32,12 @@ const UploadButton: FunctionComponent<UploadButtonProps> = ({
 
   const upload = async () => {
     // validation
-    if (!image || !imageName || !setImage) throw new ValidationError('image not set')
-    else if (pattern === 'audio' && (!audio || !audioName || !setAudio)) throw new ValidationError('audio not set')
-    else if (!name) throw new ValidationError('name is not set')
-    else if (!description) throw new ValidationError('description is not set')
+    if (!image || !imageName || !setImage) throw new ValidationError('image is not set')
+    else if (pattern === 'audio' && (!audio || !audioName || !setAudio)) throw new ValidationError('audio is not set')
+    else if (name === '') throw new ValidationError('name is not set')
+    else if (description === '') throw new ValidationError('description is not set')
+    else if (metadataKey !== '' && metadataValue === '') throw new ValidationError('value is not set')
+    else if (metadataKey === '' && metadataValue !== '') throw new ValidationError('key is not set')
 
     try {
       // start upload
@@ -61,9 +63,9 @@ const UploadButton: FunctionComponent<UploadButtonProps> = ({
         description,
         uploadImageLog.IpfsHash,
         uploadAudioLog?.IpfsHash,
-        metadataName ? metadataName : name,
-        metadataKey,
-        metadataValue
+        metadataName !== '' ? metadataName : name,
+        metadataKey !== '' ? metadataKey : undefined,
+        metadataValue !== '' ? metadataValue : undefined
       )
       const uploadJsonLog = await uploadJson(JSON.stringify(jsonData), pinataApiJwt)
       fileUploaded(jsonData, uploadJsonLog)
