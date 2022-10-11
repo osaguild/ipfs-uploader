@@ -9,7 +9,15 @@ import { UploadButton } from '../UploadButton'
 import { ImageContext, useImageProvider } from '../../hooks/ImageContext'
 import { AudioContext, useAudioProvider } from '../../hooks/AudioContext'
 import { TokenContext, useTokenProvider } from '../../hooks/TokenContext'
-import { UploadedData, Event, SelectedEvent, UploadingEvent, SuccessEvent, FailedEvent } from '../../types/event'
+import {
+  UploadedData,
+  Event,
+  FileSelectedEvent,
+  ValidationErrorEvent,
+  UploadingEvent,
+  SuccessEvent,
+  FailedEvent,
+} from '../../types/event'
 import { Pattern, Size } from '../../types/common'
 
 interface IpfsUploaderProps {
@@ -32,8 +40,8 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({
   const [disabledForm, setDisabledForm] = useState(false)
 
   const imageSelected = (file: File) => {
-    const event: SelectedEvent = {
-      eventType: 'SELECTED',
+    const event: FileSelectedEvent = {
+      eventType: 'FILE_SELECTED',
       dataType: 'IMAGE',
       file,
     }
@@ -41,10 +49,18 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({
   }
 
   const audioSelected = (file: File) => {
-    const event: SelectedEvent = {
-      eventType: 'SELECTED',
+    const event: FileSelectedEvent = {
+      eventType: 'FILE_SELECTED',
       dataType: 'AUDIO',
       file,
+    }
+    callback(event)
+  }
+
+  const validationError = (message: string) => {
+    const event: ValidationErrorEvent = {
+      eventType: 'VALIDATION_ERROR',
+      message,
     }
     callback(event)
   }
@@ -88,6 +104,7 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({
               {pattern === 'audio' && <AudioSelector selected={audioSelected} />}
               <UploadButton
                 uploading={uploading}
+                validationError={validationError}
                 success={success}
                 failed={failed}
                 pinataApiJwt={pinataApiJwt}

@@ -15,6 +15,7 @@ describe('UploadButton()', () => {
     render(
       <UploadButton
         uploading={() => true}
+        validationError={() => true}
         success={() => true}
         failed={() => true}
         pinataApiJwt={PINATA_API_JWT}
