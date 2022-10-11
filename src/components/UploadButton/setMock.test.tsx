@@ -16,6 +16,7 @@ describe('UploadButton()', () => {
     render(
       <UploadButton
         uploading={() => true}
+        validationError={() => true}
         success={() => true}
         failed={() => true}
         pinataApiJwt="dummy"
@@ -28,6 +29,7 @@ describe('UploadButton()', () => {
     render(
       <UploadButton
         uploading={() => true}
+        validationError={() => true}
         success={() => true}
         failed={() => true}
         pinataApiJwt="dummy"

@@ -12,28 +12,36 @@ import { UploadedData } from '../../types/event'
 
 interface UploadButtonProps {
   uploading: () => void
+  validationError: (message: string) => void
   success: (uploadedData: UploadedData[]) => void
   failed: (message: string) => void
   pinataApiJwt: string
   pattern: Pattern
 }
 
-const UploadButton: FunctionComponent<UploadButtonProps> = ({ uploading, success, failed, pinataApiJwt, pattern }) => {
+const UploadButton: FunctionComponent<UploadButtonProps> = ({
+  uploading,
+  validationError,
+  success,
+  failed,
+  pinataApiJwt,
+  pattern,
+}) => {
   const [loading, setLoading] = useState(false)
   const { image, imageName, setImage } = useImageContext()
   const { audio, audioName, setAudio } = useAudioContext()
   const { name, description, metadataName, metadataKey, metadataValue } = useTokenContext()
 
   const upload = async () => {
-    // validation
-    if (!image || !imageName || !setImage) throw new ValidationError('image is not set')
-    else if (pattern === 'audio' && (!audio || !audioName || !setAudio)) throw new ValidationError('audio is not set')
-    else if (name === '') throw new ValidationError('name is not set')
-    else if (description === '') throw new ValidationError('description is not set')
-    else if (metadataKey !== '' && metadataValue === '') throw new ValidationError('value is not set')
-    else if (metadataKey === '' && metadataValue !== '') throw new ValidationError('key is not set')
-
     try {
+      // validation
+      if (!image || !imageName || !setImage) throw new ValidationError('image is not set')
+      else if (pattern === 'audio' && (!audio || !audioName || !setAudio)) throw new ValidationError('audio is not set')
+      else if (name === '') throw new ValidationError('name is not set')
+      else if (description === '') throw new ValidationError('description is not set')
+      else if (metadataKey !== '' && metadataValue === '') throw new ValidationError('value is not set')
+      else if (metadataKey === '' && metadataValue !== '') throw new ValidationError('key is not set')
+
       // start upload
       uploading()
       setLoading(true)
@@ -72,7 +80,7 @@ const UploadButton: FunctionComponent<UploadButtonProps> = ({ uploading, success
     } catch (e) {
       console.log(e)
       if (e instanceof ValidationError) {
-        failed(e.message)
+        validationError(e.message)
       } else if (e instanceof AxiosError) {
         failed('pinata api call is failed')
       } else {
