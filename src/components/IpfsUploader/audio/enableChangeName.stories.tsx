@@ -11,12 +11,13 @@ export default {
 
 const Template: ComponentStory<typeof IpfsUploader> = () => (
   <IpfsUploader
-    pinataApiJwt={PINATA_API_JWT}
     callback={(event) => console.log('event is occurred:', event)}
-    enableMetadata={false}
-    enableChangeName={true}
-    imageSize="m"
-    pattern="audio"
+    config={{
+      enableChange: { metadataName: false, metadataKeyValue: false, imageName: true, audioName: true },
+      imageSize: 'm',
+      pattern: 'audio',
+      pinataApiJwt: PINATA_API_JWT,
+    }}
   />
 )
 

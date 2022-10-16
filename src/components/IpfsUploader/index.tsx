@@ -21,22 +21,23 @@ import {
 import { Pattern, Size } from '../../types/common'
 
 interface IpfsUploaderProps {
-  pinataApiJwt: string
   callback: (event: Event) => void
-  enableMetadata: boolean
-  enableChangeName: boolean
-  imageSize: Size
-  pattern: Pattern
+  config: Config
 }
 
-const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({
-  pinataApiJwt,
-  callback,
-  enableMetadata,
-  enableChangeName,
-  imageSize,
-  pattern,
-}) => {
+type Config = {
+  enableChange: {
+    metadataName: boolean
+    metadataKeyValue: boolean
+    imageName: boolean
+    audioName: boolean
+  }
+  imageSize: Size
+  pattern: Pattern
+  pinataApiJwt: string
+}
+
+const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({ callback, config }) => {
   const [disabledForm, setDisabledForm] = useState(false)
 
   const imageSelected = (file: File) => {
@@ -96,19 +97,29 @@ const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({
       <ImageContext.Provider value={useImageProvider()}>
         <AudioContext.Provider value={useAudioProvider()}>
           <TokenContext.Provider value={useTokenProvider()}>
-            <TokenForm enableMetadataName={enableMetadata} enableKeyValue={enableMetadata} disable={disabledForm} />
-            <ImageView enableChangeName={enableChangeName} imageSize={imageSize} disable={disabledForm} />
-            {pattern === 'audio' && <AudioView enableChangeName={enableChangeName} disable={disabledForm} />}
+            <TokenForm
+              enableMetadataName={config.enableChange.metadataName}
+              enableKeyValue={config.enableChange.metadataKeyValue}
+              disable={disabledForm}
+            />
+            <ImageView
+              enableChangeName={config.enableChange.imageName}
+              imageSize={config.imageSize}
+              disable={disabledForm}
+            />
+            {config.pattern === 'audio' && (
+              <AudioView enableChangeName={config.enableChange.audioName} disable={disabledForm} />
+            )}
             <Stack spacing="2" direction="row" justify="center" mt="2">
               <ImageSelector selected={imageSelected} />
-              {pattern === 'audio' && <AudioSelector selected={audioSelected} />}
+              {config.pattern === 'audio' && <AudioSelector selected={audioSelected} />}
               <UploadButton
                 uploading={uploading}
                 validationError={validationError}
                 success={success}
                 failed={failed}
-                pinataApiJwt={pinataApiJwt}
-                pattern={pattern}
+                pinataApiJwt={config.pinataApiJwt}
+                pattern={config.pattern}
               />
             </Stack>
           </TokenContext.Provider>
