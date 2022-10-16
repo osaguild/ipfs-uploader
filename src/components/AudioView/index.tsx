@@ -1,5 +1,6 @@
 import { FunctionComponent, ChangeEvent } from 'react'
-import { Input, Text, FormControl, FormLabel, FormErrorMessage } from '@chakra-ui/react'
+import { Input, Text, FormControl, FormLabel, FormErrorMessage, Box } from '@chakra-ui/react'
+import { CheckCircleIcon } from '@chakra-ui/icons'
 import { useAudioContext } from '../../hooks/AudioContext'
 
 interface AudioViewProps {
@@ -17,7 +18,11 @@ const AudioView: FunctionComponent<AudioViewProps> = ({ enableChangeName, disabl
   const audioNameIsValid = !audioName ? true : audioName?.length === 0 ? true : false
 
   return audio ? (
-    <>
+    <Box my="4" textAlign="center">
+      <Text as="b" fontSize="lg">
+        <CheckCircleIcon color="green" boxSize="5" mr="2" />
+        audio is uploaded
+      </Text>
       {enableChangeName ? (
         <FormControl id="audio-name" isInvalid={audioNameIsValid} isRequired>
           <FormLabel>audio name</FormLabel>
@@ -36,7 +41,7 @@ const AudioView: FunctionComponent<AudioViewProps> = ({ enableChangeName, disabl
           {audio.name}
         </Text>
       )}
-    </>
+    </Box>
   ) : (
     <></>
   )

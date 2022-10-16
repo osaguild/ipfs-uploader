@@ -1,5 +1,6 @@
 import { FunctionComponent, ChangeEvent } from 'react'
-import { Input, Image, Text, FormControl, FormLabel, FormErrorMessage, Center } from '@chakra-ui/react'
+import { Input, Image, Text, FormControl, FormLabel, FormErrorMessage, Center, Box } from '@chakra-ui/react'
+import { CheckCircleIcon } from '@chakra-ui/icons'
 import { useImageContext } from '../../hooks/ImageContext'
 import { Size } from '../../types/common'
 
@@ -19,8 +20,12 @@ const ImageView: FunctionComponent<ImageViewProps> = ({ enableChangeName, imageS
   const imageNameIsValid = !imageName ? true : imageName?.length === 0 ? true : false
 
   return image ? (
-    <>
-      <Center>
+    <Box my="4" textAlign="center" >
+      <Text as="b" fontSize="lg">
+        <CheckCircleIcon color="green" boxSize="5" mr="2" />
+        image is uploaded
+      </Text>
+      <Center mt="2">
         <Image
           src={dataUrl}
           boxSize={imageSize === 's' ? '100px' : imageSize === 'l' ? '300px' : '200px'}
@@ -45,7 +50,7 @@ const ImageView: FunctionComponent<ImageViewProps> = ({ enableChangeName, imageS
           {image.name}
         </Text>
       )}
-    </>
+    </Box>
   ) : (
     <></>
   )
