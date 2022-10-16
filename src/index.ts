@@ -10,3 +10,4 @@ export {
   SuccessEvent,
   FailedEvent,
 } from './types/event'
+export { Pattern, Size, Config } from './types/common'

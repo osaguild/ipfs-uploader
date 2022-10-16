@@ -18,23 +18,11 @@ import {
   SuccessEvent,
   FailedEvent,
 } from '../../types/event'
-import { Pattern, Size } from '../../types/common'
+import { Config } from '../../types/common'
 
 interface IpfsUploaderProps {
   callback: (event: Event) => void
   config: Config
-}
-
-type Config = {
-  enableChange: {
-    metadataName: boolean
-    metadataKeyValue: boolean
-    imageName: boolean
-    audioName: boolean
-  }
-  imageSize: Size
-  pattern: Pattern
-  pinataApiJwt: string
 }
 
 const IpfsUploader: FunctionComponent<IpfsUploaderProps> = ({ callback, config }) => {
