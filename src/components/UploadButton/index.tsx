@@ -76,6 +76,7 @@ const UploadButton: FunctionComponent<UploadButtonProps> = ({
       // end upload
       success(uploadedData)
       setImage(undefined)
+      if (pattern === 'audio' && setAudio) setAudio(undefined)
       setLoading(false)
     } catch (e) {
       console.log(e)
