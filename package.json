@@ -38,12 +38,15 @@
     "sb": "start-storybook -p 6006",
     "build-sb": "build-storybook"
   },
-  "dependencies": {
+  "peerDependencies": {
+    "@chakra-ui/icons": "^2.0.11",
     "@chakra-ui/react": "^2.2.8",
     "axios": "^0.27.2",
     "react": "^18.2.0"
   },
   "devDependencies": {
+    "@chakra-ui/icons": "^2.0.11",
+    "@chakra-ui/react": "^2.2.8",
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "@jest/types": "^28.1.3",
@@ -67,6 +70,7 @@
     "@types/react-dom": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.33.1",
+    "axios": "^0.27.2",
     "babel-plugin-named-exports-order": "^0.0.2",
     "dotenv": "^16.0.1",
     "eslint": "^8.0.1",
@@ -82,6 +86,7 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
     "prop-types": "^15.8.1",
+    "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "^5.0.1",
     "rollup": "^2.78.1",
