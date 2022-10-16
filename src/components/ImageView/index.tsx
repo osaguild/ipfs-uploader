@@ -20,7 +20,7 @@ const ImageView: FunctionComponent<ImageViewProps> = ({ enableChangeName, imageS
   const imageNameIsValid = !imageName ? true : imageName?.length === 0 ? true : false
 
   return image ? (
-    <Box my="4" textAlign="center" >
+    <Box my="4" textAlign="center">
       <Text as="b" fontSize="lg">
         <CheckCircleIcon color="green" boxSize="5" mr="2" />
         image is uploaded
